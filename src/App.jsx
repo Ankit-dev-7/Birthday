@@ -1,22 +1,14 @@
 import React, { useState, lazy, Suspense } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { AppProvider } from './context/AppContext';
 import { AudioProvider } from './context/AudioContext';
-import { ErrorBoundary } from './components/ErrorBoundary';
-
-// ── Always-loaded global effects ─────────────────────────────────────────────
+import { LandingPage } from './components/scenes/LandingPage';
 import { DynamicSky } from './components/effects/DynamicSky';
-import { CursorGlow } from './components/effects/CursorGlow';
 import { ParticleSystem } from './components/effects/ParticleSystem';
-import { MusicPlayer } from './components/extras/MusicPlayer';
-import { LoveMessagesPopup } from './components/extras/LoveMessagesPopup';
+import { CursorGlow } from './components/effects/CursorGlow';
 import { SectionDivider } from './components/layout/SectionDivider';
 
-// ── Eagerly loaded scenes (above the fold) ───────────────────────────────────
-import { LandingPage } from './components/scenes/LandingPage';
-
-// ── Lazily loaded scenes (below the fold / heavy) ────────────────────────────
-const OpeningAnimation = lazy(() => import('./components/scenes/OpeningAnimation'));
+// Lazy load all heavy scenes
 const MemoryTimeline   = lazy(() => import('./components/scenes/MemoryTimeline'));
 const LoveLetter       = lazy(() => import('./components/scenes/LoveLetter'));
 const ReasonsCards     = lazy(() => import('./components/scenes/ReasonsCards'));
@@ -26,124 +18,92 @@ const NightSky         = lazy(() => import('./components/scenes/NightSky'));
 const MiniGame         = lazy(() => import('./components/scenes/MiniGame'));
 const SecretSurprise   = lazy(() => import('./components/scenes/SecretSurprise'));
 const EndingScene      = lazy(() => import('./components/scenes/EndingScene'));
-
-// ── Lazily loaded extras ─────────────────────────────────────────────────────
 const GiftBox          = lazy(() => import('./components/extras/GiftBox'));
 const MemoryMap        = lazy(() => import('./components/extras/MemoryMap'));
 const AILoveQuotes     = lazy(() => import('./components/extras/AILoveQuotes'));
 const VoiceNotePlayer  = lazy(() => import('./components/extras/VoiceNotePlayer'));
+const MusicPlayer      = lazy(() => import('./components/extras/MusicPlayer'));
+const LoveMessagesPopup = lazy(() => import('./components/extras/LoveMessagesPopup'));
 
-// ── Scene loading fallback ───────────────────────────────────────────────────
-function SceneFallback() {
+// Safe wrapper — if a scene crashes, show nothing instead of breaking the page
+class Safe extends React.Component {
+  state = { error: false };
+  static getDerivedStateFromError() { return { error: true }; }
+  render() {
+    if (this.state.error) return null;
+    return this.props.children;
+  }
+}
+
+function Scene({ component: Component }) {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <motion.div
-        className="text-soft-pink/40 text-2xl"
-        animate={{ opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
-      >
-        ✦
-      </motion.div>
-    </div>
+    <Safe>
+      <Suspense fallback={null}>
+        <Component />
+      </Suspense>
+    </Safe>
   );
 }
 
 function AppContent() {
-  const [phase, setPhase] = useState('landing'); // 'landing' | 'opening' | 'main'
-
-  const handleReveal = () => setPhase('opening');
-  const handleOpeningComplete = () => setPhase('main');
+  const [phase, setPhase] = useState('landing');
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
-      {/* ── Fixed global layers ─────────────────────────────────────────── */}
+    <div style={{ position: 'relative', minHeight: '100vh', background: '#000' }}>
+      {/* Always-on background effects */}
       <DynamicSky />
-      <CursorGlow />
       <ParticleSystem />
+      <CursorGlow />
 
-      {/* Music player & popups only after landing */}
-      {phase !== 'landing' && (
-        <>
-          <MusicPlayer />
-          <LoveMessagesPopup />
-        </>
+      {/* Phase 1: Landing */}
+      {phase === 'landing' && (
+        <LandingPage onReveal={() => setPhase('main')} />
       )}
 
-      {/* ── Phase: Landing ──────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {phase === 'landing' && (
-          <LandingPage onReveal={handleReveal} />
-        )}
-      </AnimatePresence>
+      {/* Phase 2: Main content */}
+      {phase === 'main' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        >
+          {/* Floating UI */}
+          <Scene component={MusicPlayer} />
+          <Scene component={LoveMessagesPopup} />
 
-      {/* ── Phase: Opening Animation ────────────────────────────────────── */}
-      <AnimatePresence>
-        {phase === 'opening' && (
-          <Suspense fallback={<SceneFallback />}>
-            <ErrorBoundary>
-              <OpeningAnimation onComplete={handleOpeningComplete} />
-            </ErrorBoundary>
-          </Suspense>
-        )}
-      </AnimatePresence>
-
-      {/* ── Phase: Main content ─────────────────────────────────────────── */}
-      <AnimatePresence>
-        {phase === 'main' && (
-          <motion.main
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-          >
-            <Suspense fallback={<SceneFallback />}>
-
-              <ErrorBoundary><MemoryTimeline /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><LoveLetter /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><ReasonsCards /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><PhotoGallery /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><LoveCounter /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><NightSky /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><MiniGame /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><GiftBox /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><MemoryMap /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><AILoveQuotes /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><VoiceNotePlayer /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><SecretSurprise /></ErrorBoundary>
-              <SectionDivider />
-
-              <ErrorBoundary><EndingScene /></ErrorBoundary>
-
-            </Suspense>
-          </motion.main>
-        )}
-      </AnimatePresence>
+          {/* Scenes */}
+          <Scene component={MemoryTimeline} />
+          <SectionDivider />
+          <Scene component={LoveLetter} />
+          <SectionDivider />
+          <Scene component={ReasonsCards} />
+          <SectionDivider />
+          <Scene component={PhotoGallery} />
+          <SectionDivider />
+          <Scene component={LoveCounter} />
+          <SectionDivider />
+          <Scene component={NightSky} />
+          <SectionDivider />
+          <Scene component={MiniGame} />
+          <SectionDivider />
+          <Scene component={GiftBox} />
+          <SectionDivider />
+          <Scene component={MemoryMap} />
+          <SectionDivider />
+          <Scene component={AILoveQuotes} />
+          <SectionDivider />
+          <Scene component={VoiceNotePlayer} />
+          <SectionDivider />
+          <Scene component={SecretSurprise} />
+          <SectionDivider />
+          <Scene component={EndingScene} />
+        </motion.div>
+      )}
     </div>
   );
 }
 
-function App() {
+export default function App() {
   return (
     <AppProvider>
       <AudioProvider>
@@ -152,5 +112,3 @@ function App() {
     </AppProvider>
   );
 }
-
-export default App;

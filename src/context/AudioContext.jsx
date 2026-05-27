@@ -50,12 +50,10 @@ export function AudioProvider({ children }) {
     return howl;
   }, [volume]);
 
-  // When currentIndex changes, load new track
+  // When currentIndex changes, load new track (lazy — only create Howl, don't auto-play)
   useEffect(() => {
-    const howl = createHowl(currentIndex);
-    if (audioEnabled && howl) {
-      howl.play();
-    }
+    createHowl(currentIndex);
+    // Don't auto-play on index change — only play if user has enabled audio
     return () => {
       if (howlRef.current) {
         howlRef.current.stop();
