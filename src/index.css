@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base resets ─────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-black text-glowing-white overflow-x-hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1a0533;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #FFB6C1;
+    border-radius: 2px;
+  }
+}
+
+/* ─── Glassmorphism utility ───────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-pink {
+    background: rgba(255, 182, 193, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 8px 32px rgba(255, 182, 193, 0.1);
+  }
+
+  .glass-purple {
+    background: rgba(139, 92, 246, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+  }
+
+  /* Neon text glow */
+  .neon-pink {
+    color: #FFB6C1;
+    text-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1, 0 0 40px rgba(255,182,193,0.5);
+  }
+
+  .neon-purple {
+    color: #c49fff;
+    text-shadow: 0 0 10px #c49fff, 0 0 20px #8b5cf6, 0 0 40px rgba(139,92,246,0.5);
+  }
+
+  .neon-white {
+    color: #f8f0ff;
+    text-shadow: 0 0 10px #f8f0ff, 0 0 20px #f8f0ff, 0 0 40px rgba(248,240,255,0.5);
+  }
+
+  /* Gradient animated text */
+  .gradient-text {
+    background: linear-gradient(135deg, #FFB6C1, #c49fff, #E6E6FA, #FFB6C1);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  /* Scene section base */
+  .scene {
+    @apply relative min-h-screen w-full overflow-hidden;
+  }
+}
+
+/* ─── Global keyframes ────────────────────────────────────────────────────── */
+@layer utilities {
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+  }
+
+  @keyframes driftFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(2deg); }
+    66% { transform: translateY(-8px) rotate(-1deg); }
+  }
+
+  @keyframes rainDrop {
+    0% { transform: translateY(-20px); opacity: 0.8; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+
+  @keyframes heartMorph {
+    0% { content: '|'; }
+    100% { content: '♥'; }
+  }
+
+  /* Reduced motion overrides */
+  .reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
