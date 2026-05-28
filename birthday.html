@@ -44,21 +44,43 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 .animated-bg{background:linear-gradient(135deg,var(--black),var(--dp),var(--purple),var(--black));background-size:400% 400%;animation:bgShift 15s ease infinite}
 @keyframes bgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-/* ===== MEMORY TIMELINE ===== */
+/* ===== FUTURE WITH YOU ===== */
+.future-subtitle{font-family:'Dancing Script',cursive;font-size:1.3rem;color:rgba(255,182,193,0.8);text-align:center;margin-top:-30px;margin-bottom:50px;font-style:italic}
+.future-bg-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.future-heart{position:absolute;font-size:1.2rem;animation:futureFloat var(--fd,8s) var(--fdelay,0s) ease-in-out infinite;opacity:0.15;color:#FFB6C1}
+@keyframes futureFloat{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.1}50%{transform:translateY(-30px) rotate(10deg);opacity:0.25}}
+
+/* Dream cards grid */
+.dreams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;max-width:1100px;width:100%;position:relative;z-index:1}
+.dream-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,182,193,0.2);border-radius:20px;padding:28px 20px;text-align:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:default;opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease,box-shadow .3s,border-color .3s;animation:dreamFloat var(--df,4s) var(--ddelay,0s) ease-in-out infinite}
+.dream-card.visible{opacity:1;transform:translateY(0)}
+.dream-card:hover{box-shadow:0 0 30px rgba(255,182,193,0.3),0 0 60px rgba(196,159,255,0.15);border-color:rgba(255,182,193,0.5);transform:translateY(-6px) scale(1.03)}
+@keyframes dreamFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.dream-card.visible:hover{transform:translateY(-8px) scale(1.03)}
+.dream-emoji{font-size:2.8rem;margin-bottom:14px;display:block;filter:drop-shadow(0 0 8px rgba(255,182,193,0.5))}
+.dream-text{font-family:'Dancing Script',cursive;font-size:1.1rem;color:rgba(248,240,255,0.9);line-height:1.5}
+.dream-sparkle{position:absolute;top:10px;right:14px;font-size:.7rem;color:rgba(255,215,0,0.5);animation:sparkle 2s ease-in-out infinite}
+@keyframes sparkle{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+/* Open When envelopes */
+.envelopes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;max-width:1100px;width:100%;position:relative;z-index:1}
+.envelope-wrap{perspective:1000px}
+.envelope{position:relative;border-radius:16px;cursor:pointer;transition:transform .3s,box-shadow .3s;transform-style:preserve-3d}
+.envelope:hover{transform:translateY(-4px);box-shadow:0 0 30px rgba(255,182,193,0.25)}
+.envelope-front{background:linear-gradient(135deg,rgba(255,182,193,0.1),rgba(196,159,255,0.08));border:1px solid rgba(255,182,193,0.25);border-radius:16px;padding:30px 24px;text-align:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;overflow:hidden}
+.envelope-front::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(135deg,rgba(255,182,193,0.08),rgba(196,159,255,0.05));clip-path:polygon(0 0,100% 0,50% 55%);transition:transform .4s ease}
+.envelope.open .envelope-front::before{transform:rotateX(-180deg);transform-origin:top center}
+.envelope-icon{font-size:2.5rem;margin-bottom:12px;display:block}
+.envelope-label{font-family:'Dancing Script',cursive;font-size:1.2rem;color:rgba(248,240,255,0.9);line-height:1.4}
+.envelope-hint{font-size:.75rem;color:rgba(255,182,193,0.5);margin-top:10px;font-family:'Inter',sans-serif;letter-spacing:.05em}
+.envelope-message{max-height:0;overflow:hidden;transition:max-height .6s ease,padding .4s ease,opacity .5s ease;opacity:0;padding:0 24px}
+.envelope.open .envelope-message{max-height:300px;opacity:1;padding:20px 24px}
+.envelope-msg-text{font-family:'Dancing Script',cursive;font-size:1.15rem;color:rgba(248,240,255,0.92);line-height:1.7;text-align:center;padding:16px;background:rgba(255,182,193,0.06);border-radius:12px;border:1px solid rgba(255,182,193,0.15)}
+.envelope-close{display:block;text-align:center;margin-top:12px;font-size:.75rem;color:rgba(255,182,193,0.5);font-family:'Inter',sans-serif;cursor:pointer}
+.envelope-close:hover{color:rgba(255,182,193,0.9)}
+
+/* ===== MEMORY TIMELINE (old — keep CSS for safety) ===== */
 #timeline{background:linear-gradient(180deg,var(--black),var(--dp))}
-.timeline-container{max-width:900px;width:100%;position:relative}
-.timeline-container::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--hp),var(--lav),transparent);transform:translateX(-50%)}
-.memory-card{display:flex;gap:30px;margin-bottom:60px;align-items:flex-start;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
-.memory-card.visible{opacity:1;transform:translateY(0)}
-.memory-card:nth-child(even){flex-direction:row-reverse}
-.memory-card:nth-child(even) .memory-dot{margin-left:auto;margin-right:auto}
-.memory-content{flex:1;max-width:380px}
-.memory-dot{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--hp),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:0 0 20px rgba(255,105,180,0.5);z-index:1;position:relative}
-.memory-date{font-size:.85rem;color:var(--lav);margin-bottom:8px;letter-spacing:1px}
-.memory-caption{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--pink);margin-bottom:10px}
-.memory-desc{font-size:.95rem;line-height:1.7;color:rgba(255,255,255,0.8)}
-.memory-location{font-size:.8rem;color:var(--gold);margin-top:8px;letter-spacing:1px}
-@media(max-width:600px){.timeline-container::before{left:20px}.memory-card,.memory-card:nth-child(even){flex-direction:column}.memory-dot{margin:0 0 10px 0}}
 
 /* ===== LOVE LETTER ===== */
 #love-letter{background:linear-gradient(180deg,var(--dp),var(--purple))}
@@ -228,10 +250,14 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 <!-- Love Popup -->
 <div class="love-popup" id="love-popup"></div>
 
-<!-- ===== 1. MEMORY TIMELINE ===== -->
-<section class="section animated-bg" id="timeline">
-  <h2 class="section-title">Our Story &#x1F4AB;</h2>
-  <div class="timeline-container" id="timeline-container"></div>
+<!-- ===== 1. FUTURE WITH YOU ===== -->
+
+<!-- PART 1: Future Dreams -->
+<section class="section" id="future-section" style="background:linear-gradient(180deg,#000,#1a0533,#2d0a5e)">
+  <div class="future-bg-hearts" id="future-hearts"></div>
+  <h2 class="section-title">A Future I Dream Of &#x2728;</h2>
+  <p class="future-subtitle">"Every future version of me still chooses you."</p>
+  <div class="dreams-grid" id="dreams-grid"></div>
 </section>
 
 <!-- ===== 2. LOVE LETTER ===== -->
@@ -269,6 +295,13 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   <div class="lightbox-content" id="lightbox-content"></div>
   <div class="lightbox-caption" id="lightbox-caption"></div>
 </div>
+
+<!-- ===== OPEN WHEN ===== -->
+<section class="section" id="open-when-section" style="background:linear-gradient(180deg,#2d0a5e,#1a0533,#000)">
+  <h2 class="section-title">Open When... &#x1F48C;</h2>
+  <p class="future-subtitle">"For every moment you need me most."</p>
+  <div class="envelopes-grid" id="envelopes-grid"></div>
+</section>
 
 
 
@@ -594,44 +627,108 @@ function openSurprise() {
 
 // ===== INIT ALL SECTIONS =====
 function initAll() {
-  buildTimeline();
+  buildFutureSection();
   buildReasons();
   buildGallery();
   initNightSky();
   initQuotes();
   startLovePopups();
   initAurora();
-  observeTimeline();
 }
 </script>
 
 <script>
-// ===== MEMORY TIMELINE =====
-function buildTimeline() {
-  const container = document.getElementById('timeline-container');
-  memories.forEach((m, i) => {
-    const card = document.createElement('div');
-    card.className = 'memory-card';
-    card.innerHTML = `
-      <div class="glass-card memory-content">
-        <div class="memory-date">${m.date}</div>
-        <div class="memory-caption">${m.caption}</div>
-        <div class="memory-desc">${m.desc}</div>
-        <div class="memory-location">&#x1F4CD; ${m.location}</div>
-      </div>
-      <div class="memory-dot">${m.emoji}</div>
-      <div style="flex:1"></div>
-    `;
-    container.appendChild(card);
-  });
-}
+// ===== FUTURE WITH YOU =====
+const dreams = [
+  {emoji:'🌙', text:'Late night drives together'},
+  {emoji:'🌅', text:'Watching sunsets at 70 years old'},
+  {emoji:'✈️', text:'Traveling the world together'},
+  {emoji:'🏡', text:'Building a cozy home'},
+  {emoji:'💃', text:'Dancing in the kitchen at midnight'},
+  {emoji:'🎂', text:'Celebrating every birthday together'},
+  {emoji:'👵💜👴', text:'Growing old while still flirting'},
+  {emoji:'⭐', text:'Stargazing on random nights'},
+  {emoji:'🤝', text:'Holding your hand through every hard moment'},
+  {emoji:'📸', text:'Creating a lifetime of memories'},
+];
 
-function observeTimeline() {
-  const cards = document.querySelectorAll('.memory-card');
+const openWhenCards = [
+  {label:"you're sad", icon:'🌧️', msg:"You are allowed to feel everything. But please know — even on your darkest days, you are so deeply loved. I'm here, always."},
+  {label:"you miss me", icon:'💌', msg:"No matter how far apart we are, my heart still finds yours. Close your eyes — I'm right there with you."},
+  {label:"you can't sleep", icon:'🌙', msg:"Count the stars and know that I'm looking at the same sky, thinking of you. You are safe. You are loved. Rest now."},
+  {label:"you feel insecure", icon:'🪞', msg:"You are breathtakingly beautiful — not just on the outside, but in every single way. I see you. All of you. And I love every part."},
+  {label:"you need motivation", icon:'⚡', msg:"You are stronger than you think, braver than you feel, and more capable than you know. I believe in you completely."},
+  {label:"you're overthinking", icon:'🌀', msg:"Take a breath. You don't have to figure everything out right now. You are enough, exactly as you are, in this exact moment."},
+  {label:"you want to smile", icon:'🌸', msg:"Remember that time you laughed so hard you couldn't breathe? That's my favourite sound in the entire world. I love you."},
+  {label:"you need love", icon:'💜', msg:"You deserve every beautiful thing this world has to offer. You are loved more deeply than words can ever explain. Always."},
+];
+
+function buildFutureSection() {
+  // Floating hearts background
+  const heartsContainer = document.getElementById('future-hearts');
+  for (let i = 0; i < 20; i++) {
+    const h = document.createElement('span');
+    h.className = 'future-heart';
+    h.textContent = '♥';
+    h.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--fd:${6+Math.random()*8}s;--fdelay:${Math.random()*5}s;font-size:${0.8+Math.random()*1.5}rem`;
+    heartsContainer.appendChild(h);
+  }
+
+  // Dream cards
+  const grid = document.getElementById('dreams-grid');
+  dreams.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'dream-card';
+    card.style.cssText = `--df:${3+Math.random()*3}s;--ddelay:${Math.random()*2}s;transition-delay:${i*0.08}s`;
+    card.innerHTML = `
+      <span class="dream-sparkle">✦</span>
+      <span class="dream-emoji">${d.emoji}</span>
+      <div class="dream-text">${d.text}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Open When envelopes
+  const envGrid = document.getElementById('envelopes-grid');
+  let openCard = null;
+  openWhenCards.forEach((c, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'envelope-wrap';
+    wrap.innerHTML = `
+      <div class="envelope" id="env-${i}">
+        <div class="envelope-front">
+          <span class="envelope-icon">${c.icon}</span>
+          <div class="envelope-label">Open when ${c.label}</div>
+          <div class="envelope-hint">tap to open 💌</div>
+        </div>
+        <div class="envelope-message">
+          <div class="envelope-msg-text">${c.msg}</div>
+          <span class="envelope-close" onclick="closeEnv(${i})">✕ close</span>
+        </div>
+      </div>
+    `;
+    wrap.querySelector('.envelope-front').addEventListener('click', () => {
+      const env = document.getElementById('env-' + i);
+      if (env.classList.contains('open')) return;
+      // Close any open card
+      if (openCard !== null && openCard !== i) {
+        document.getElementById('env-' + openCard).classList.remove('open');
+      }
+      env.classList.add('open');
+      openCard = i;
+    });
+    envGrid.appendChild(wrap);
+  });
+
+  // Observe dream cards for scroll animation
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, {threshold: 0.2});
-  cards.forEach(c => obs.observe(c));
+  }, {threshold: 0.15});
+  document.querySelectorAll('.dream-card').forEach(c => obs.observe(c));
+}
+
+function closeEnv(i) {
+  document.getElementById('env-' + i).classList.remove('open');
 }
 
 // ===== LOVE LETTER =====
