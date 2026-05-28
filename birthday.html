@@ -96,14 +96,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 .lightbox-close{position:absolute;top:20px;right:30px;font-size:2rem;cursor:pointer;color:var(--white);background:none;border:none}
 .lightbox-caption{font-family:'Dancing Script',cursive;font-size:1.3rem;color:var(--pink)}
 
-/* ===== LOVE COUNTER ===== */
-#counter{background:linear-gradient(180deg,var(--dp),var(--black))}
-.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:800px;width:100%}
-@media(max-width:500px){.counter-grid{grid-template-columns:repeat(2,1fr)}}
-.counter-unit{text-align:center;padding:30px 20px}
-.counter-num{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,8vw,5rem);background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.counter-label{font-size:.85rem;color:var(--lav);letter-spacing:2px;margin-top:8px;text-transform:uppercase}
-.counter-subtitle{font-family:'Dancing Script',cursive;font-size:1.3rem;color:var(--pink);margin-top:30px;text-align:center}
+
 
 /* ===== NIGHT SKY ===== */
 #night-sky{background:radial-gradient(ellipse at center,#0a0020,#000);min-height:100vh;position:relative;overflow:hidden}
@@ -145,17 +138,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 .quote-dot{width:8px;height:8px;border-radius:50%;background:var(--gb);transition:background .3s}
 .quote-dot.active{background:var(--hp)}
 
-/* ===== VOICE NOTE ===== */
-#voice-note{background:linear-gradient(180deg,var(--dp),var(--black))}
-.player-card{max-width:500px;width:100%;padding:40px}
-.player-title{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--pink);text-align:center;margin-bottom:30px}
-.player-controls{display:flex;align-items:center;gap:20px;justify-content:center}
-.play-btn{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--hp),var(--purple));border:none;color:var(--white);font-size:1.5rem;cursor:pointer;transition:transform .3s,box-shadow .3s;display:flex;align-items:center;justify-content:center}
-.play-btn:hover{transform:scale(1.1);box-shadow:0 0 30px rgba(255,105,180,0.5)}
-.player-progress{flex:1;height:4px;background:var(--gb);border-radius:2px;overflow:hidden}
-.player-bar{height:100%;background:linear-gradient(90deg,var(--hp),var(--lav));width:0%;transition:width .1s}
-.player-time{font-size:.85rem;color:var(--lav);min-width:40px}
-.player-note{font-family:'Dancing Script',cursive;font-size:1rem;color:rgba(255,255,255,0.5);text-align:center;margin-top:20px}
+
 
 /* ===== SECRET SURPRISE ===== */
 #secret{background:linear-gradient(180deg,var(--black),var(--dp))}
@@ -288,17 +271,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   <div class="lightbox-caption" id="lightbox-caption"></div>
 </div>
 
-<!-- ===== 5. LOVE COUNTER ===== -->
-<section class="section" id="counter" style="background:linear-gradient(180deg,var(--dp),var(--black))">
-  <h2 class="section-title">Time Together &#x23F1;&#xFE0F;</h2>
-  <div class="counter-grid">
-    <div class="glass-card counter-unit"><div class="counter-num" id="cnt-days">0</div><div class="counter-label">Days</div></div>
-    <div class="glass-card counter-unit"><div class="counter-num" id="cnt-hours">0</div><div class="counter-label">Hours</div></div>
-    <div class="glass-card counter-unit"><div class="counter-num" id="cnt-mins">0</div><div class="counter-label">Minutes</div></div>
-    <div class="glass-card counter-unit"><div class="counter-num" id="cnt-secs">0</div><div class="counter-label">Seconds</div></div>
-  </div>
-  <p class="counter-subtitle">...and counting, every single one with you &#x1F49C;</p>
-</section>
+
 
 <!-- ===== 6. NIGHT SKY ===== -->
 <section class="section" id="night-sky">
@@ -344,19 +317,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   </div>
 </section>
 
-<!-- ===== 11. VOICE NOTE PLAYER ===== -->
-<section class="section" id="voice-note" style="background:linear-gradient(180deg,var(--dp),var(--black))">
-  <h2 class="section-title">A Voice Note &#x1F3A4;</h2>
-  <div class="glass-card player-card">
-    <div class="player-title">&#x1F49C; For You, Always</div>
-    <div class="player-controls">
-      <button class="play-btn" id="voice-play-btn" onclick="toggleVoice()">&#x25B6;</button>
-      <div class="player-progress"><div class="player-bar" id="voice-bar"></div></div>
-      <span class="player-time" id="voice-time">0:00</span>
-    </div>
-    <p class="player-note">&#x1F3B5; Add your audio file to public/audio/ and update the src below</p>
-  </div>
-</section>
+
 
 <!-- ===== 12. SECRET SURPRISE ===== -->
 <section class="section" id="secret" style="background:linear-gradient(180deg,var(--black),var(--dp))">
@@ -383,10 +344,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   <source src="public/audio/song.mp3" type="audio/mpeg">
   <source src="audio/song.mp3" type="audio/mpeg">
 </audio>
-<audio id="voice-audio">
-  <source src="public/audio/voice.mp3" type="audio/mpeg">
-  <source src="audio/voice.mp3" type="audio/mpeg">
-</audio>
+
 
 <script>
 // ===== DATA =====
@@ -641,10 +599,8 @@ function initAll() {
   buildTimeline();
   buildReasons();
   buildGallery();
-  startCounter();
   initNightSky();
   initQuotes();
-  initVoicePlayer();
   startLovePopups();
   initAurora();
   observeTimeline();
@@ -735,24 +691,7 @@ function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
 }
 
-// ===== LOVE COUNTER =====
-const startDate = new Date('2023-02-14T00:00:00');
-function startCounter() {
-  function update() {
-    const now = new Date();
-    const diff = now - startDate;
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cnt-days').textContent = days.toLocaleString();
-    document.getElementById('cnt-hours').textContent = hours;
-    document.getElementById('cnt-mins').textContent = mins;
-    document.getElementById('cnt-secs').textContent = secs;
-  }
-  update();
-  setInterval(update, 1000);
-}
+
 </script>
 
 <script>
@@ -1092,40 +1031,7 @@ function showQuote(idx) {
   }, 400);
 }
 
-// ===== VOICE PLAYER =====
-let voiceAudio, voicePlaying = false;
-function initVoicePlayer() {
-  voiceAudio = document.getElementById('voice-audio');
-  voiceAudio.addEventListener('timeupdate', updateVoiceProgress);
-  voiceAudio.addEventListener('ended', () => {
-    voicePlaying = false;
-    document.getElementById('voice-play-btn').innerHTML = '&#x25B6;';
-  });
-}
 
-function toggleVoice() {
-  if (!voiceAudio) return;
-  if (voicePlaying) {
-    voiceAudio.pause();
-    voicePlaying = false;
-    document.getElementById('voice-play-btn').innerHTML = '&#x25B6;';
-  } else {
-    voiceAudio.play().catch(() => {
-      document.querySelector('.player-note').textContent = '\u1F3B5 No audio file found. Add voice.mp3 to public/audio/ to enable this feature.';
-    });
-    voicePlaying = true;
-    document.getElementById('voice-play-btn').innerHTML = '&#x23F8;';
-  }
-}
-
-function updateVoiceProgress() {
-  if (!voiceAudio.duration) return;
-  const pct = (voiceAudio.currentTime / voiceAudio.duration) * 100;
-  document.getElementById('voice-bar').style.width = pct + '%';
-  const m = Math.floor(voiceAudio.currentTime / 60);
-  const s = Math.floor(voiceAudio.currentTime % 60);
-  document.getElementById('voice-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
-}
 </script>
 
 <script>
