@@ -96,12 +96,31 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 /* ===== REASONS CARDS ===== */
 #reasons{background:linear-gradient(180deg,var(--purple),var(--mp))}
 .reasons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;max-width:1100px;width:100%}
-.flip-card{height:160px;perspective:1000px;cursor:pointer}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip-card{height:180px;perspective:1000px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s ease;transform-style:preserve-3d}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:15px;display:flex;align-items:center;justify-content:center;padding:15px;text-align:center}
-.flip-front{background:linear-gradient(135deg,var(--glass),rgba(255,105,180,0.1));border:1px solid var(--gb);font-size:2rem}
-.flip-back{background:linear-gradient(135deg,rgba(255,105,180,0.2),rgba(138,43,226,0.2));border:1px solid rgba(255,105,180,0.3);transform:rotateY(180deg);font-size:.9rem;line-height:1.5;color:var(--white)}
+.flip-front,.flip-back{
+  position:absolute;inset:0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:18px;display:flex;align-items:center;justify-content:center;
+  padding:16px;text-align:center;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.flip-front{
+  background:linear-gradient(135deg,rgba(255,105,180,0.15),rgba(138,43,226,0.1));
+  border:1px solid rgba(255,105,180,0.3);
+  flex-direction:column;gap:8px;
+}
+.flip-back{
+  background:linear-gradient(135deg,rgba(255,105,180,0.2),rgba(138,43,226,0.18));
+  border:1px solid rgba(255,105,180,0.4);
+  transform:rotateY(180deg);
+  flex-direction:column;gap:10px;padding:20px 16px;
+  box-shadow:0 0 30px rgba(255,105,180,0.15);
+}
+.flip-card:hover .flip-front{
+  box-shadow:0 8px 32px rgba(255,105,180,0.2),0 0 0 1px rgba(255,182,193,0.2);
+}
 
 /* ===== PHOTO GALLERY ===== */
 #gallery{background:linear-gradient(180deg,var(--mp),var(--dp))}
@@ -215,9 +234,528 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   .counter-grid{grid-template-columns:repeat(2,1fr)}
   #music-player{bottom:10px;right:10px;padding:8px 15px}
 }
+
+/* ============================================================
+   CINEMATIC VISUAL UPGRADES
+   ============================================================ */
+
+/* ── Global cinematic base ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-20;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(255,105,180,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 80%, rgba(138,43,226,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(255,215,0,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, #0a0015 0%, #000 100%);
+  pointer-events:none;
+}
+
+/* ── Section title glow ── */
+.section-title{
+  text-shadow:0 0 40px rgba(255,182,193,0.3),0 0 80px rgba(196,159,255,0.15);
+  position:relative;
+}
+.section-title::after{
+  content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+  width:60px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,182,193,0.6),transparent);
+  border-radius:2px;
+}
+
+/* ── Floating orb base ── */
+.orb{
+  position:absolute;border-radius:50%;filter:blur(60px);
+  pointer-events:none;animation:orbFloat var(--od,20s) var(--odelay,0s) ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes orbFloat{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(var(--ox,20px),var(--oy,-30px)) scale(1.05)}
+  66%{transform:translate(calc(var(--ox,20px)*-0.5),var(--oy,-30px)) scale(0.97)}
+  100%{transform:translate(0,0) scale(1)}
+}
+
+/* ── Sparkle overlay ── */
+.sparkle-field{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.sp{position:absolute;border-radius:50%;background:#fff;
+  animation:spTwinkle var(--sd,3s) var(--sdelay,0s) ease-in-out infinite;
+  opacity:0;
+}
+@keyframes spTwinkle{
+  0%,100%{opacity:0;transform:scale(0.5)}
+  50%{opacity:var(--sop,0.6);transform:scale(1)}
+}
+
+/* ── Section divider glow ── */
+.glow-divider{
+  width:100%;height:1px;position:relative;margin:0;
+  background:linear-gradient(90deg,transparent,rgba(255,182,193,0.3),rgba(196,159,255,0.4),rgba(255,182,193,0.3),transparent);
+  overflow:visible;
+}
+.glow-divider::before{
+  content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:200px;height:8px;
+  background:radial-gradient(ellipse,rgba(255,182,193,0.4),transparent 70%);
+  filter:blur(4px);
+}
+
+/* ── Premium glassmorphism upgrade ── */
+.glass-card{
+  background:rgba(255,255,255,0.04) !important;
+  border:1px solid rgba(255,182,193,0.15) !important;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06) !important;
+  backdrop-filter:blur(20px) !important;
+  -webkit-backdrop-filter:blur(20px) !important;
+}
+.glass-card:hover{
+  box-shadow:0 16px 48px rgba(255,105,180,0.15),0 0 0 1px rgba(255,182,193,0.25),inset 0 1px 0 rgba(255,255,255,0.08) !important;
+  border-color:rgba(255,182,193,0.3) !important;
+}
+
+/* ── SECTION: Future Dreams ── */
+#future-section{
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 30%, rgba(255,105,180,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 70%, rgba(138,43,226,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,215,0,0.05) 0%, transparent 50%),
+    linear-gradient(180deg,#000,#1a0533,#2d0a5e) !important;
+  overflow:hidden;
+}
+.dream-card{
+  background:rgba(255,255,255,0.04) !important;
+  border:1px solid rgba(255,182,193,0.18) !important;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05) !important;
+  backdrop-filter:blur(16px) !important;
+  -webkit-backdrop-filter:blur(16px) !important;
+}
+.dream-card:hover{
+  background:rgba(255,182,193,0.07) !important;
+  box-shadow:0 0 30px rgba(255,105,180,0.2),0 0 60px rgba(196,159,255,0.1),inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+/* ── SECTION: Open When ── */
+#open-when-section{
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 40%, rgba(196,159,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(255,182,193,0.1) 0%, transparent 60%),
+    linear-gradient(180deg,#2d0a5e,#1a0533,#000) !important;
+  overflow:hidden;
+}
+.envelope-front{
+  background:linear-gradient(135deg,rgba(196,159,255,0.08),rgba(255,182,193,0.06)) !important;
+  border:1px solid rgba(196,159,255,0.25) !important;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.envelope:hover .envelope-front{
+  box-shadow:0 0 25px rgba(196,159,255,0.2),0 0 50px rgba(255,182,193,0.1) !important;
+  border-color:rgba(196,159,255,0.4) !important;
+}
+
+/* ── SECTION: Love Letter ── */
+#love-letter{
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,215,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(255,105,180,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(255,165,0,0.05) 0%, transparent 60%),
+    linear-gradient(180deg,#1a0533,#2d0a5e) !important;
+  overflow:hidden;
+}
+.letter-paper{
+  background:linear-gradient(135deg,rgba(255,240,200,0.06),rgba(255,215,0,0.03)) !important;
+  border:1px solid rgba(255,215,0,0.2) !important;
+  box-shadow:0 0 40px rgba(255,215,0,0.08),0 8px 32px rgba(0,0,0,0.4) !important;
+}
+
+/* ── SECTION: Reasons ── */
+#reasons{
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 20%, rgba(255,105,180,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(138,43,226,0.12) 0%, transparent 60%),
+    linear-gradient(180deg,#2d0a5e,#4a1080) !important;
+  overflow:hidden;
+}
+.flip-front{
+  box-shadow:0 4px 20px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.flip-back{
+  box-shadow:0 0 20px rgba(255,105,180,0.15),inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+/* ── SECTION: Gallery ── */
+#gallery{
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 20%, rgba(255,182,193,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 70% 80%, rgba(196,159,255,0.1) 0%, transparent 60%),
+    linear-gradient(180deg,#4a1080,#2d0a5e) !important;
+  overflow:hidden;
+}
+.gallery-item{
+  box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 0 1px rgba(255,182,193,0.08) !important;
+}
+.gallery-item:hover{
+  box-shadow:0 8px 32px rgba(255,105,180,0.2),0 0 0 1px rgba(255,182,193,0.3) !important;
+}
+
+/* ── SECTION: Night Sky ── */
+#night-sky{
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(138,43,226,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 90%, rgba(255,105,180,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at center, #0a0020, #000) !important;
+}
+
+/* ── SECTION: Mini Game ── */
+#mini-game{
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(255,105,180,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 20% 30%, rgba(255,215,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 70%, rgba(138,43,226,0.1) 0%, transparent 60%),
+    linear-gradient(180deg,#000,#1a0533) !important;
+  overflow:hidden;
+}
+#game-canvas{
+  box-shadow:0 0 40px rgba(255,105,180,0.15),0 0 80px rgba(138,43,226,0.1) !important;
+}
+
+/* ── SECTION: Gift ── */
+#gift-section{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 40%, rgba(255,215,0,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 70%, rgba(255,105,180,0.1) 0%, transparent 60%),
+    linear-gradient(180deg,#1a0533,#2d0a5e) !important;
+  overflow:hidden;
+}
+
+/* ── SECTION: Quotes ── */
+#quotes-section{
+  background:
+    radial-gradient(ellipse 70% 50% at 60% 30%, rgba(196,159,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 30% 70%, rgba(255,182,193,0.08) 0%, transparent 60%),
+    linear-gradient(180deg,#4a1080,#2d0a5e) !important;
+  overflow:hidden;
+}
+.quote-display{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(196,159,255,0.15);
+  border-radius:24px;
+  padding:50px 40px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 0 40px rgba(196,159,255,0.08),0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* ── SECTION: Secret ── */
+#secret{
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(138,43,226,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 20%, rgba(255,105,180,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,215,0,0.05) 0%, transparent 60%),
+    linear-gradient(180deg,#1a0533,#000) !important;
+  overflow:hidden;
+}
+
+/* ── SECTION: Ending ── */
+#ending{
+  overflow:hidden;
+}
+.ending-title{
+  text-shadow:0 0 40px rgba(255,182,193,0.4),0 0 80px rgba(196,159,255,0.2) !important;
+}
+
+/* ── Animated gradient shimmer on titles ── */
+@keyframes titleShimmer{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+.section-title{
+  background-size:300% 300% !important;
+  animation:titleShimmer 6s ease infinite !important;
+}
+
+/* ── Glow pulse on section entry ── */
+@keyframes sectionGlow{
+  0%{box-shadow:none}
+  50%{box-shadow:0 0 60px rgba(255,182,193,0.05)}
+  100%{box-shadow:none}
+}
+
+/* ── Floating decorative elements ── */
+.deco-float{
+  position:absolute;pointer-events:none;
+  animation:decoFloat var(--dfd,12s) var(--dfdelay,0s) ease-in-out infinite;
+  opacity:var(--dfop,0.12);
+  font-size:var(--dfsize,1.5rem);
+  color:var(--dfcolor,#FFB6C1);
+  z-index:0;
+}
+@keyframes decoFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-20px) rotate(5deg)}
+  75%{transform:translateY(10px) rotate(-3deg)}
+}
+
+/* ── Wave section separator ── */
+.wave-sep{
+  width:100%;overflow:hidden;line-height:0;
+  background:transparent;position:relative;z-index:1;
+}
+.wave-sep svg{display:block;width:100%;height:40px}
+
+/* ── Ambient light pulse ── */
+@keyframes ambientPulse{
+  0%,100%{opacity:0.6}50%{opacity:1}
+}
+.ambient-light{
+  position:absolute;border-radius:50%;filter:blur(80px);
+  pointer-events:none;animation:ambientPulse var(--ap,8s) var(--apd,0s) ease-in-out infinite;
+  z-index:0;
+}
+
+/* ── Enhanced music player ── */
+#music-player{
+  background:rgba(26,5,51,0.85) !important;
+  border:1px solid rgba(255,182,193,0.2) !important;
+  box-shadow:0 0 20px rgba(255,105,180,0.1),0 4px 20px rgba(0,0,0,0.5) !important;
+  backdrop-filter:blur(20px) !important;
+}
+
+/* ── Enhanced flip cards ── */
+.flip-card:hover .flip-inner{
+  filter:drop-shadow(0 0 12px rgba(255,105,180,0.3));
+}
+
+/* ── Enhanced envelope ── */
+.envelope-msg-text{
+  background:rgba(196,159,255,0.06) !important;
+  border:1px solid rgba(196,159,255,0.2) !important;
+  box-shadow:0 0 20px rgba(196,159,255,0.08) !important;
+}
+
+/* ── Smooth section transitions ── */
+.section{
+  position:relative;
+  transition:background .5s ease;
+}
+.section::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.3));
+  pointer-events:none;z-index:1;
+}
+
+/* ── Landing page cinematic upgrade ── */
+#landing{
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(255,105,180,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 70% 60%, rgba(138,43,226,0.1) 0%, transparent 60%),
+    #000 !important;
+}
+#open-btn{
+  box-shadow:0 0 30px rgba(255,105,180,0.4),0 0 60px rgba(255,105,180,0.15),inset 0 1px 0 rgba(255,255,255,0.1) !important;
+}
+#open-btn:hover{
+  box-shadow:0 0 50px rgba(255,105,180,0.7),0 0 100px rgba(255,105,180,0.3),inset 0 1px 0 rgba(255,255,255,0.15) !important;
+}
+
+/* ── Secret heart enhanced ── */
+.secret-heart{
+  filter:drop-shadow(0 0 20px rgba(255,105,180,0.4)) drop-shadow(0 0 40px rgba(138,43,226,0.2)) !important;
+}
+.secret-heart.unlocked{
+  filter:drop-shadow(0 0 30px rgba(255,105,180,0.8)) drop-shadow(0 0 60px rgba(255,215,0,0.3)) !important;
+}
+
+/* ── Gift box enhanced ── */
+.gift-box{
+  filter:drop-shadow(0 0 20px rgba(255,215,0,0.3)) drop-shadow(0 0 40px rgba(255,105,180,0.2)) !important;
+}
+
+/* ── Candle glow enhanced ── */
+.candle{
+  filter:drop-shadow(0 0 15px rgba(255,215,0,0.5)) drop-shadow(0 0 30px rgba(255,165,0,0.3)) !important;
+}
+
+/* ============================================================
+   PREMIUM CINEMATIC ENHANCEMENTS v2
+   ============================================================ */
+
+/* ── Mouse glow follower ── */
+#mouse-glow{
+  position:fixed;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,182,193,0.06) 0%,rgba(196,159,255,0.04) 40%,transparent 70%);
+  pointer-events:none;z-index:9;transform:translate(-50%,-50%);
+  transition:left .3s ease,top .3s ease;mix-blend-mode:screen;
+  filter:blur(20px);
+}
+
+/* ── Grain texture overlay ── */
+#grain-overlay{
+  position:fixed;inset:0;z-index:8;pointer-events:none;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+/* ── Cinematic light rays ── */
+.light-ray{
+  position:absolute;pointer-events:none;
+  width:2px;height:60%;
+  background:linear-gradient(to bottom,transparent,rgba(255,182,193,0.06),transparent);
+  transform-origin:top center;
+  animation:rayDrift var(--rd,20s) var(--rdelay,0s) ease-in-out infinite alternate;
+  filter:blur(8px);z-index:0;
+}
+@keyframes rayDrift{
+  0%{transform:rotate(var(--ra,-15deg)) translateX(0);opacity:0.4}
+  100%{transform:rotate(calc(var(--ra,-15deg) + 8deg)) translateX(30px);opacity:0.8}
+}
+
+/* ── Shooting stars ── */
+.shooting-star{
+  position:absolute;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent);
+  animation:shoot var(--ss,4s) var(--ssdelay,0s) linear infinite;
+  opacity:0;pointer-events:none;z-index:1;
+}
+@keyframes shoot{
+  0%{opacity:0;transform:translateX(-100px) translateY(0)}
+  5%{opacity:1}
+  30%{opacity:0;transform:translateX(300px) translateY(80px)}
+  100%{opacity:0;transform:translateX(300px) translateY(80px)}
+}
+
+/* ── Nebula cloud ── */
+.nebula{
+  position:absolute;border-radius:50%;pointer-events:none;
+  filter:blur(80px);mix-blend-mode:screen;
+  animation:nebulaDrift var(--nd,30s) var(--ndelay,0s) ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes nebulaDrift{
+  0%{transform:translate(0,0) scale(1);opacity:var(--nop,0.08)}
+  50%{transform:translate(var(--nx,20px),var(--ny,-15px)) scale(1.08);opacity:calc(var(--nop,0.08)*1.4)}
+  100%{transform:translate(0,0) scale(1);opacity:var(--nop,0.08)}
+}
+
+/* ── Mesh gradient animation ── */
+@keyframes meshShift{
+  0%{background-position:0% 0%,100% 100%,50% 0%}
+  33%{background-position:100% 0%,0% 100%,100% 50%}
+  66%{background-position:100% 100%,0% 0%,0% 100%}
+  100%{background-position:0% 0%,100% 100%,50% 0%}
+}
+
+/* ── Landing galaxy upgrade ── */
+#landing{
+  background:
+    radial-gradient(ellipse 120% 80% at 20% 30%, rgba(138,43,226,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255,105,180,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(75,0,130,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 30% 80%, rgba(255,215,0,0.04) 0%, transparent 50%),
+    #000 !important;
+}
+
+/* ── Enhanced open button ── */
+#open-btn{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,105,180,0.2),rgba(138,43,226,0.3)) !important;
+  border:1px solid rgba(255,182,193,0.4) !important;
+}
+#open-btn::before{
+  content:'';position:absolute;inset:-2px;border-radius:50px;
+  background:linear-gradient(90deg,transparent,rgba(255,182,193,0.4),transparent,rgba(196,159,255,0.4),transparent);
+  background-size:300% 100%;
+  animation:btnShine 3s linear infinite;
+  z-index:-1;
+}
+@keyframes btnShine{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+#open-btn::after{
+  content:'';position:absolute;inset:0;border-radius:50px;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,182,193,0.15),transparent 70%);
+  animation:btnPulse 2s ease-in-out infinite;
+}
+@keyframes btnPulse{
+  0%,100%{opacity:0.5;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.02)}
+}
+
+/* ── Love letter warm atmosphere ── */
+#love-letter{
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 20%, rgba(255,215,0,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 20% 60%, rgba(255,165,0,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(255,105,180,0.08) 0%, transparent 50%),
+    linear-gradient(180deg,#1a0533,#2d0a5e) !important;
+}
+
+/* ── Night sky galaxy upgrade ── */
+#night-sky{
+  background:
+    radial-gradient(ellipse 150% 100% at 50% 50%, rgba(20,0,60,0.9) 0%, #000 70%) !important;
+}
+
+/* ── Ending scene breathtaking ── */
+#ending{
+  background:
+    radial-gradient(ellipse 120% 80% at 30% 40%, rgba(138,43,226,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 70% at 70% 60%, rgba(255,105,180,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,215,0,0.06) 0%, transparent 50%),
+    #000 !important;
+}
+
+/* ── Dust particle ── */
+.dust{
+  position:absolute;border-radius:50%;pointer-events:none;
+  animation:dustFloat var(--dfd2,15s) var(--dfd2delay,0s) ease-in-out infinite;
+  z-index:0;
+}
+@keyframes dustFloat{
+  0%{transform:translate(0,0);opacity:0}
+  20%{opacity:var(--dustop,0.4)}
+  80%{opacity:var(--dustop,0.4)}
+  100%{transform:translate(var(--dustx,30px),var(--dusty,-60px));opacity:0}
+}
+
+/* ── Parallax layers ── */
+.parallax-slow{will-change:transform;transition:transform .1s linear}
+.parallax-med{will-change:transform;transition:transform .05s linear}
+
+/* ── Section glow separator ── */
+.cinematic-sep{
+  width:100%;height:120px;position:relative;overflow:hidden;
+  background:transparent;pointer-events:none;
+}
+.cinematic-sep::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:80%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,182,193,0.2),rgba(196,159,255,0.3),rgba(255,215,0,0.15),rgba(255,182,193,0.2),transparent);
+}
+.cinematic-sep::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:200px;height:40px;
+  background:radial-gradient(ellipse,rgba(255,182,193,0.15),transparent 70%);
+  filter:blur(10px);
+}
+
+/* ── Glowing constellation lines ── */
+#constellation-svg path,#constellation-svg line{
+  filter:drop-shadow(0 0 3px rgba(255,182,193,0.8));
+}
+
+/* ── Premium section depth shadows ── */
+.section{
+  box-shadow:inset 0 -60px 80px rgba(0,0,0,0.4),inset 0 60px 80px rgba(0,0,0,0.2) !important;
+}
 </style>
 </head>
 <body>
+
+<!-- Mouse glow -->
+<div id="mouse-glow"></div>
+<!-- Grain overlay -->
+<div id="grain-overlay"></div>
 
 <!-- Particle Canvas -->
 <canvas id="particle-canvas"></canvas>
@@ -634,6 +1172,7 @@ function initAll() {
   initQuotes();
   startLovePopups();
   initAurora();
+  injectCinematicAtmosphere();
 }
 </script>
 
@@ -742,15 +1281,57 @@ function openLetter() {
 // ===== REASONS CARDS =====
 function buildReasons() {
   const grid = document.getElementById('reasons-grid');
+  const cardColors = [
+    {from:'rgba(255,105,180,0.18)',to:'rgba(138,43,226,0.12)',border:'rgba(255,105,180,0.35)',glow:'rgba(255,105,180,0.2)'},
+    {from:'rgba(196,159,255,0.15)',to:'rgba(75,0,130,0.15)',border:'rgba(196,159,255,0.35)',glow:'rgba(196,159,255,0.2)'},
+    {from:'rgba(255,182,193,0.15)',to:'rgba(138,43,226,0.12)',border:'rgba(255,182,193,0.35)',glow:'rgba(255,182,193,0.2)'},
+    {from:'rgba(255,215,0,0.1)',to:'rgba(255,105,180,0.12)',border:'rgba(255,215,0,0.3)',glow:'rgba(255,215,0,0.15)'},
+  ];
   reasons.forEach((r, i) => {
+    const c = cardColors[i % cardColors.length];
+    const num = String(i + 1).padStart(2, '0');
     const card = document.createElement('div');
     card.className = 'flip-card';
     card.innerHTML = `
       <div class="flip-inner">
-        <div class="flip-front">
-          <span style="font-size:2.5rem">${r.emoji}</span>
+        <div class="flip-front" style="
+          background:linear-gradient(135deg,${c.from},${c.to});
+          border:1px solid ${c.border};
+          box-shadow:0 4px 24px rgba(0,0,0,0.3),0 0 20px ${c.glow},inset 0 1px 0 rgba(255,255,255,0.08);
+          flex-direction:column;gap:8px;
+        ">
+          <span style="
+            position:absolute;top:12px;left:14px;
+            font-family:'Inter',sans-serif;font-size:.65rem;
+            color:rgba(255,255,255,0.25);letter-spacing:.15em;font-weight:500;
+          ">${num}</span>
+          <span style="font-size:2.8rem;filter:drop-shadow(0 0 8px ${c.glow})">${r.emoji}</span>
+          <span style="
+            font-family:'Dancing Script',cursive;font-size:.85rem;
+            color:rgba(255,255,255,0.35);letter-spacing:.08em;
+          ">tap to reveal</span>
         </div>
-        <div class="flip-back">${r.text}</div>
+        <div class="flip-back" style="
+          background:linear-gradient(135deg,${c.from},${c.to});
+          border:1px solid ${c.border};
+          box-shadow:0 4px 24px rgba(0,0,0,0.3),0 0 30px ${c.glow},inset 0 1px 0 rgba(255,255,255,0.08);
+          flex-direction:column;gap:10px;padding:20px 16px;
+        ">
+          <span style="font-size:1.6rem;filter:drop-shadow(0 0 6px ${c.glow})">${r.emoji}</span>
+          <p style="
+            font-family:'Dancing Script',cursive;
+            font-size:1.05rem;
+            line-height:1.55;
+            background:linear-gradient(135deg,#fff 0%,rgba(255,182,193,0.95) 50%,rgba(230,230,250,0.9) 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            text-align:center;
+            text-shadow:none;
+          ">${r.text}</p>
+          <span style="
+            font-family:'Inter',sans-serif;font-size:.6rem;
+            color:rgba(255,255,255,0.2);letter-spacing:.12em;margin-top:4px;
+          ">${num} / ${reasons.length}</span>
+        </div>
       </div>
     `;
     card.addEventListener('click', () => card.classList.toggle('flipped'));
@@ -1305,6 +1886,346 @@ document.addEventListener('keydown', e => {
 
 // ===== TOUCH SUPPORT FOR LANDING =====
 document.getElementById('open-btn').addEventListener('touchend', openSurprise);
+
+// ===== PREMIUM CINEMATIC ENGINE =====
+(function() {
+
+  // ── Mouse glow follower ──
+  const mouseGlow = document.getElementById('mouse-glow');
+  let mx = -500, my = -500, glowX = -500, glowY = -500;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, {passive:true});
+  function animateGlow() {
+    glowX += (mx - glowX) * 0.08;
+    glowY += (my - glowY) * 0.08;
+    mouseGlow.style.left = glowX + 'px';
+    mouseGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+  }
+  animateGlow();
+
+  // ── Parallax on scroll ──
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    document.querySelectorAll('.orb').forEach((orb, i) => {
+      const speed = 0.05 + (i % 3) * 0.03;
+      orb.style.transform = `translateY(${sy * speed}px)`;
+    });
+    document.querySelectorAll('.nebula').forEach((n, i) => {
+      const speed = 0.03 + (i % 2) * 0.02;
+      n.style.transform = `translateY(${sy * speed}px)`;
+    });
+    lastScroll = sy;
+  }, {passive:true});
+
+  // ── Upgrade landing page with nebulas + shooting stars ──
+  function upgradeLanding() {
+    const landing = document.getElementById('landing');
+    if (!landing) return;
+
+    // Nebula clouds
+    const nebulas = [
+      {w:500,h:300,top:'10%',left:'5%',color:'rgba(138,43,226,0.15)',nd:'35s',nx:'30px',ny:'-20px',nop:0.12},
+      {w:400,h:400,top:'50%',left:'60%',color:'rgba(255,105,180,0.12)',nd:'28s',nx:'-25px',ny:'20px',nop:0.1},
+      {w:300,h:200,top:'70%',left:'20%',color:'rgba(255,215,0,0.06)',nd:'40s',nx:'20px',ny:'-15px',nop:0.07},
+    ];
+    nebulas.forEach((n,i) => {
+      const el = document.createElement('div');
+      el.className = 'nebula';
+      el.style.cssText = `width:${n.w}px;height:${n.h}px;top:${n.top};left:${n.left};background:${n.color};--nd:${n.nd};--ndelay:${i*4}s;--nx:${n.nx};--ny:${n.ny};--nop:${n.nop}`;
+      landing.appendChild(el);
+    });
+
+    // Shooting stars
+    for (let i = 0; i < 4; i++) {
+      const ss = document.createElement('div');
+      ss.className = 'shooting-star';
+      ss.style.cssText = `top:${10+Math.random()*40}%;left:${Math.random()*60}%;width:${80+Math.random()*120}px;--ss:${6+Math.random()*8}s;--ssdelay:${i*3+Math.random()*4}s;transform:rotate(-20deg)`;
+      landing.appendChild(ss);
+    }
+  }
+  upgradeLanding();
+
+  // ── Upgrade night sky with shooting stars + galaxy cloud ──
+  function upgradeNightSky() {
+    const sky = document.getElementById('night-sky');
+    if (!sky) return;
+
+    // Galaxy nebula
+    const gal = document.createElement('div');
+    gal.className = 'nebula';
+    gal.style.cssText = `width:600px;height:400px;top:20%;left:20%;background:radial-gradient(ellipse,rgba(75,0,130,0.15),rgba(138,43,226,0.08),transparent);--nd:45s;--ndelay:0s;--nx:20px;--ny:-10px;--nop:0.12`;
+    sky.insertBefore(gal, sky.firstChild);
+
+    // Shooting stars in night sky
+    for (let i = 0; i < 5; i++) {
+      const ss = document.createElement('div');
+      ss.className = 'shooting-star';
+      ss.style.cssText = `top:${5+Math.random()*50}%;left:${Math.random()*70}%;width:${60+Math.random()*100}px;--ss:${5+Math.random()*7}s;--ssdelay:${i*4+Math.random()*6}s;transform:rotate(-25deg)`;
+      sky.appendChild(ss);
+    }
+  }
+
+  // ── Upgrade love letter with dust particles ──
+  function upgradeLoveLetter() {
+    const section = document.getElementById('love-letter');
+    if (!section) return;
+
+    // Light rays
+    for (let i = 0; i < 3; i++) {
+      const ray = document.createElement('div');
+      ray.className = 'light-ray';
+      ray.style.cssText = `top:0;left:${20+i*25}%;--ra:${-20+i*10}deg;--rd:${18+i*5}s;--rdelay:${i*3}s;height:70%`;
+      section.appendChild(ray);
+    }
+
+    // Dust particles
+    for (let i = 0; i < 20; i++) {
+      const dust = document.createElement('div');
+      dust.className = 'dust';
+      const size = 1 + Math.random() * 2;
+      dust.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        background:rgba(255,215,0,${0.3+Math.random()*0.4});
+        --dfd2:${10+Math.random()*15}s;--dfd2delay:${Math.random()*10}s;
+        --dustop:${0.3+Math.random()*0.4};
+        --dustx:${(Math.random()-0.5)*60}px;--dusty:${-30-Math.random()*60}px;
+        box-shadow:0 0 ${size*2}px rgba(255,215,0,0.5);
+      `;
+      section.appendChild(dust);
+    }
+  }
+
+  // ── Upgrade ending scene ──
+  function upgradeEnding() {
+    const section = document.getElementById('ending');
+    if (!section) return;
+
+    // Large nebulas
+    const nebulas = [
+      {w:700,h:500,top:'0%',left:'-10%',color:'rgba(138,43,226,0.18)',nd:'40s',nx:'25px',ny:'-15px',nop:0.15},
+      {w:500,h:400,top:'30%',left:'50%',color:'rgba(255,105,180,0.15)',nd:'35s',nx:'-20px',ny:'20px',nop:0.12},
+      {w:400,h:300,top:'60%',left:'10%',color:'rgba(255,215,0,0.08)',nd:'45s',nx:'15px',ny:'-20px',nop:0.08},
+    ];
+    nebulas.forEach((n,i) => {
+      const el = document.createElement('div');
+      el.className = 'nebula';
+      el.style.cssText = `width:${n.w}px;height:${n.h}px;top:${n.top};left:${n.left};background:${n.color};--nd:${n.nd};--ndelay:${i*5}s;--nx:${n.nx};--ny:${n.ny};--nop:${n.nop}`;
+      section.insertBefore(el, section.firstChild);
+    });
+
+    // Floating dust
+    for (let i = 0; i < 25; i++) {
+      const dust = document.createElement('div');
+      dust.className = 'dust';
+      const size = 1 + Math.random() * 3;
+      const colors = ['rgba(255,182,193,', 'rgba(196,159,255,', 'rgba(255,215,0,', 'rgba(255,255,255,'];
+      const col = colors[Math.floor(Math.random()*colors.length)];
+      dust.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        background:${col}${0.4+Math.random()*0.4});
+        --dfd2:${12+Math.random()*18}s;--dfd2delay:${Math.random()*12}s;
+        --dustop:${0.4+Math.random()*0.4};
+        --dustx:${(Math.random()-0.5)*80}px;--dusty:${-40-Math.random()*80}px;
+        box-shadow:0 0 ${size*3}px ${col}0.6);
+      `;
+      section.appendChild(dust);
+    }
+  }
+
+  // ── Replace plain dividers with cinematic separators ──
+  function upgradeDividers() {
+    document.querySelectorAll('.glow-divider').forEach(d => {
+      d.className = 'cinematic-sep';
+    });
+  }
+
+  // ── Add light rays to sections ──
+  function addLightRays() {
+    const sections = ['future-section','reasons','gallery','quotes-section','secret'];
+    sections.forEach(id => {
+      const s = document.getElementById(id);
+      if (!s) return;
+      for (let i = 0; i < 2; i++) {
+        const ray = document.createElement('div');
+        ray.className = 'light-ray';
+        ray.style.cssText = `top:0;left:${15+i*55}%;--ra:${-25+i*15}deg;--rd:${22+i*6}s;--rdelay:${i*5}s;height:60%`;
+        s.appendChild(ray);
+      }
+    });
+  }
+
+  // ── Run all upgrades after main content loads ──
+  const origInitAll = window.initAll;
+  const origOpenSurprise = window.openSurprise;
+  window.openSurprise = function() {
+    origOpenSurprise && origOpenSurprise();
+    setTimeout(() => {
+      upgradeNightSky();
+      upgradeLoveLetter();
+      upgradeEnding();
+      upgradeDividers();
+      addLightRays();
+    }, 1200);
+  };
+
+})();
+</script>
+<script>
+function injectCinematicAtmosphere() {
+
+  // Config: [sectionId, orbs[], sparkleCount, decoSymbols[]]
+  const sectionAtmospheres = [
+    {
+      id: 'future-section',
+      orbs: [
+        {w:300,h:300,top:'10%',left:'5%',color:'rgba(255,105,180,0.12)',od:'18s',ox:'30px',oy:'-40px'},
+        {w:200,h:200,top:'60%',left:'80%',color:'rgba(196,159,255,0.1)',od:'22s',ox:'-20px',oy:'30px'},
+        {w:150,h:150,top:'80%',left:'30%',color:'rgba(255,215,0,0.07)',od:'15s',ox:'25px',oy:'-20px'},
+      ],
+      sparkles: 25,
+      decos: [{sym:'✦',top:'15%',left:'90%',size:'1rem',op:0.15,dur:'9s'},{sym:'✦',top:'70%',left:'5%',size:'0.8rem',op:0.12,dur:'11s'}]
+    },
+    {
+      id: 'open-when-section',
+      orbs: [
+        {w:250,h:250,top:'20%',left:'70%',color:'rgba(196,159,255,0.12)',od:'20s',ox:'-25px',oy:'35px'},
+        {w:180,h:180,top:'70%',left:'10%',color:'rgba(255,182,193,0.1)',od:'16s',ox:'20px',oy:'-25px'},
+      ],
+      sparkles: 20,
+      decos: [{sym:'💌',top:'10%',left:'5%',size:'1.2rem',op:0.1,dur:'12s'},{sym:'✦',top:'85%',left:'92%',size:'0.9rem',op:0.15,dur:'8s'}]
+    },
+    {
+      id: 'love-letter',
+      orbs: [
+        {w:300,h:200,top:'10%',left:'60%',color:'rgba(255,215,0,0.08)',od:'25s',ox:'20px',oy:'-30px'},
+        {w:200,h:200,top:'70%',left:'5%',color:'rgba(255,165,0,0.07)',od:'18s',ox:'30px',oy:'20px'},
+        {w:150,h:150,top:'40%',left:'85%',color:'rgba(255,105,180,0.08)',od:'20s',ox:'-15px',oy:'-25px'},
+      ],
+      sparkles: 15,
+      decos: [{sym:'🕯️',top:'5%',left:'3%',size:'1.5rem',op:0.12,dur:'6s'},{sym:'✦',top:'90%',left:'95%',size:'0.8rem',op:0.15,dur:'10s'}]
+    },
+    {
+      id: 'reasons',
+      orbs: [
+        {w:280,h:280,top:'5%',left:'75%',color:'rgba(255,105,180,0.1)',od:'22s',ox:'-30px',oy:'25px'},
+        {w:200,h:200,top:'75%',left:'5%',color:'rgba(138,43,226,0.1)',od:'18s',ox:'25px',oy:'-20px'},
+      ],
+      sparkles: 20,
+      decos: [{sym:'💜',top:'8%',left:'2%',size:'1rem',op:0.1,dur:'8s'},{sym:'✨',top:'88%',left:'94%',size:'1rem',op:0.12,dur:'10s'}]
+    },
+    {
+      id: 'gallery',
+      orbs: [
+        {w:250,h:250,top:'15%',left:'5%',color:'rgba(255,182,193,0.1)',od:'20s',ox:'25px',oy:'-30px'},
+        {w:200,h:200,top:'65%',left:'80%',color:'rgba(196,159,255,0.1)',od:'24s',ox:'-20px',oy:'25px'},
+      ],
+      sparkles: 18,
+      decos: [{sym:'📸',top:'5%',left:'92%',size:'1.2rem',op:0.1,dur:'9s'}]
+    },
+    {
+      id: 'mini-game',
+      orbs: [
+        {w:200,h:200,top:'10%',left:'80%',color:'rgba(255,105,180,0.12)',od:'15s',ox:'-20px',oy:'25px'},
+        {w:150,h:150,top:'70%',left:'5%',color:'rgba(255,215,0,0.08)',od:'18s',ox:'20px',oy:'-20px'},
+      ],
+      sparkles: 12,
+      decos: [{sym:'💜',top:'5%',left:'3%',size:'1rem',op:0.12,dur:'7s'}]
+    },
+    {
+      id: 'gift-section',
+      orbs: [
+        {w:280,h:200,top:'20%',left:'10%',color:'rgba(255,215,0,0.08)',od:'22s',ox:'25px',oy:'-20px'},
+        {w:200,h:200,top:'60%',left:'75%',color:'rgba(255,105,180,0.1)',od:'18s',ox:'-20px',oy:'25px'},
+      ],
+      sparkles: 15,
+      decos: [{sym:'🎁',top:'8%',left:'90%',size:'1.2rem',op:0.1,dur:'10s'},{sym:'✦',top:'85%',left:'5%',size:'0.9rem',op:0.15,dur:'8s'}]
+    },
+    {
+      id: 'quotes-section',
+      orbs: [
+        {w:300,h:250,top:'10%',left:'60%',color:'rgba(196,159,255,0.12)',od:'24s',ox:'-25px',oy:'30px'},
+        {w:200,h:200,top:'70%',left:'5%',color:'rgba(255,182,193,0.08)',od:'20s',ox:'20px',oy:'-25px'},
+      ],
+      sparkles: 20,
+      decos: [{sym:'✦',top:'5%',left:'5%',size:'1rem',op:0.15,dur:'9s'},{sym:'✦',top:'90%',left:'92%',size:'0.8rem',op:0.12,dur:'11s'}]
+    },
+    {
+      id: 'secret',
+      orbs: [
+        {w:350,h:350,top:'20%',left:'30%',color:'rgba(138,43,226,0.12)',od:'28s',ox:'20px',oy:'-30px'},
+        {w:200,h:200,top:'60%',left:'70%',color:'rgba(255,105,180,0.1)',od:'20s',ox:'-15px',oy:'20px'},
+        {w:150,h:150,top:'10%',left:'75%',color:'rgba(255,215,0,0.06)',od:'16s',ox:'15px',oy:'-15px'},
+      ],
+      sparkles: 30,
+      decos: [{sym:'🔮',top:'5%',left:'3%',size:'1.2rem',op:0.1,dur:'8s'},{sym:'✦',top:'88%',left:'94%',size:'1rem',op:0.15,dur:'10s'}]
+    },
+  ];
+
+  sectionAtmospheres.forEach(cfg => {
+    const section = document.getElementById(cfg.id);
+    if (!section) return;
+    section.style.position = 'relative';
+    section.style.overflow = 'hidden';
+
+    // Inject orbs
+    cfg.orbs.forEach((o, i) => {
+      const orb = document.createElement('div');
+      orb.className = 'orb';
+      orb.style.cssText = `
+        width:${o.w}px;height:${o.h}px;
+        top:${o.top};left:${o.left};
+        background:${o.color};
+        --od:${o.od};--odelay:${i*2}s;
+        --ox:${o.ox};--oy:${o.oy};
+        z-index:0;
+      `;
+      section.insertBefore(orb, section.firstChild);
+    });
+
+    // Inject sparkle field
+    const field = document.createElement('div');
+    field.className = 'sparkle-field';
+    for (let i = 0; i < cfg.sparkles; i++) {
+      const sp = document.createElement('div');
+      sp.className = 'sp';
+      const size = 1 + Math.random() * 2;
+      sp.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        --sd:${2+Math.random()*4}s;--sdelay:${Math.random()*5}s;
+        --sop:${0.3+Math.random()*0.5};
+      `;
+      field.appendChild(sp);
+    }
+    section.insertBefore(field, section.firstChild);
+
+    // Inject decorative floating symbols
+    if (cfg.decos) {
+      cfg.decos.forEach(d => {
+        const el = document.createElement('span');
+        el.className = 'deco-float';
+        el.textContent = d.sym;
+        el.style.cssText = `
+          top:${d.top};left:${d.left};
+          --dfsize:${d.size};--dfop:${d.op};--dfd:${d.dur};
+          --dfdelay:${Math.random()*3}s;
+        `;
+        section.appendChild(el);
+      });
+    }
+  });
+
+  // Add glow dividers between sections
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'glow-divider';
+    s.parentNode.insertBefore(div, s.nextSibling);
+  });
+}
 </script>
 
 </body>
