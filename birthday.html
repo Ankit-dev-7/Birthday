@@ -15,9 +15,8 @@
   --glass:rgba(255,255,255,0.05);--gb:rgba(255,255,255,0.1);
 }
 html{scroll-behavior:smooth}
-body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none;min-height:100vh}
-#cursor-glow{position:fixed;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle,rgba(255,182,193,0.8),transparent 70%);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen;left:-100px;top:-100px;pointer-events:none}
-#cursor-trail{position:fixed;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(230,230,250,0.3),transparent 70%);pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left .15s ease,top .15s ease;mix-blend-mode:screen;left:-100px;top:-100px}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh}
+
 #particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;position:relative;z-index:2}
 .section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);text-align:center;margin-bottom:50px;background:linear-gradient(135deg,var(--pink),var(--lav),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -133,17 +132,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 .gift-message.visible{opacity:1}
 .gift-confetti{position:absolute;top:0;left:50%;transform:translateX(-50%);pointer-events:none}
 
-/* ===== MEMORY MAP ===== */
-#memory-map{background:linear-gradient(180deg,var(--purple),var(--mp))}
-.map-container{max-width:800px;width:100%;position:relative}
-.map-svg{width:100%;height:400px;background:linear-gradient(135deg,rgba(26,5,51,0.8),rgba(45,10,94,0.8));border:1px solid var(--gb);border-radius:20px;overflow:visible}
-.map-marker{cursor:pointer;transition:transform .3s}
-.map-marker:hover{transform:scale(1.3)}
-.map-marker circle{transition:r .3s,fill .3s}
-.map-marker:hover circle{r:12}
-.map-popup{position:absolute;background:rgba(26,5,51,0.95);border:1px solid var(--hp);border-radius:12px;padding:15px;max-width:220px;pointer-events:none;opacity:0;transition:opacity .3s;z-index:10;font-size:.9rem}
-.map-popup.visible{opacity:1}
-.map-popup-title{font-family:'Dancing Script',cursive;font-size:1.2rem;color:var(--pink);margin-bottom:5px}
+
 
 /* ===== QUOTES ===== */
 #quotes-section{background:linear-gradient(180deg,var(--mp),var(--dp))}
@@ -225,10 +214,6 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
 </style>
 </head>
 <body>
-
-<!-- Cursor -->
-<div id="cursor-glow"></div>
-<div id="cursor-trail"></div>
 
 <!-- Particle Canvas -->
 <canvas id="particle-canvas"></canvas>
@@ -347,43 +332,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;o
   </div>
 </section>
 
-<!-- ===== 9. MEMORY MAP ===== -->
-<section class="section" id="memory-map">
-  <h2 class="section-title">Places We've Been &#x1F5FA;&#xFE0F;</h2>
-  <div class="map-container">
-    <svg class="map-svg" id="map-svg" viewBox="0 0 800 400">
-      <!-- Simplified world map outline -->
-      <rect width="800" height="400" fill="rgba(26,5,51,0.5)" rx="20"/>
-      <!-- Grid lines -->
-      <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
-        <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
-        <line x1="0" y1="300" x2="800" y2="300"/><line x1="200" y1="0" x2="200" y2="400"/>
-        <line x1="400" y1="0" x2="400" y2="400"/><line x1="600" y1="0" x2="600" y2="400"/>
-      </g>
-      <!-- Continents (simplified shapes) -->
-      <g fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.15)" stroke-width="1">
-        <!-- Europe/UK area -->
-        <ellipse cx="390" cy="130" rx="60" ry="50"/>
-        <!-- North America -->
-        <ellipse cx="160" cy="150" rx="100" ry="80"/>
-        <!-- South America -->
-        <ellipse cx="220" cy="280" rx="60" ry="80"/>
-        <!-- Africa -->
-        <ellipse cx="420" cy="240" rx="70" ry="90"/>
-        <!-- Asia -->
-        <ellipse cx="580" cy="150" rx="120" ry="80"/>
-        <!-- Australia -->
-        <ellipse cx="640" cy="300" rx="60" ry="40"/>
-      </g>
-      <!-- Location markers will be added by JS -->
-      <g id="map-markers"></g>
-    </svg>
-    <div class="map-popup" id="map-popup">
-      <div class="map-popup-title" id="map-popup-title"></div>
-      <div id="map-popup-desc"></div>
-    </div>
-  </div>
-</section>
+
 
 <!-- ===== 10. AI LOVE QUOTES ===== -->
 <section class="section" id="quotes-section">
@@ -561,20 +510,6 @@ const galleryItems = [
 </script>
 
 <script>
-// ===== CURSOR =====
-const cursorGlow = document.getElementById('cursor-glow');
-const cursorTrail = document.getElementById('cursor-trail');
-let mouseX = -100, mouseY = -100;
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  cursorGlow.style.left = mouseX + 'px';
-  cursorGlow.style.top = mouseY + 'px';
-  setTimeout(() => {
-    cursorTrail.style.left = mouseX + 'px';
-    cursorTrail.style.top = mouseY + 'px';
-  }, 100);
-});
-
 // ===== PARTICLE SYSTEM =====
 const pCanvas = document.getElementById('particle-canvas');
 const pCtx = pCanvas.getContext('2d');
@@ -586,43 +521,59 @@ function resizeParticleCanvas() {
 resizeParticleCanvas();
 window.addEventListener('resize', resizeParticleCanvas);
 
-const particleSymbols = ['&#x2764;','&#x2728;','&#x1F338;','&#x2B50;','&#x1F49C;'];
-const particleChars = ['\u2764','\u2728','\uD83C\uDF38','\u2B50','\uD83D\uDC9C'];
+const particleChars = ['\u2764','\u2665','\u2764','\u2665','\u2728','\u2B50'];
+
+// Color palette for particles — bright and vivid
+const particleColors = [
+  '#FFB6C1', '#ff69b4', '#ff1493', '#FFB6C1',
+  '#E6E6FA', '#c49fff', '#ffd700', '#ff8fa3'
+];
 
 class Particle {
   constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * pCanvas.width;
-    this.y = pCanvas.height + 20;
-    this.size = Math.random() * 16 + 8;
-    this.speedY = -(Math.random() * 1.5 + 0.5);
-    this.speedX = (Math.random() - 0.5) * 0.8;
-    this.opacity = Math.random() * 0.6 + 0.2;
-    this.char = particleChars[Math.floor(Math.random() * particleChars.length)];
+    this.y = pCanvas.height + 30;
+    this.size = Math.random() * 28 + 18;  // bigger: 18–46px
+    this.speedY = -(Math.random() * 1.8 + 0.8);
+    this.speedX = (Math.random() - 0.5) * 1.2;
+    this.opacity = Math.random() * 0.5 + 0.5;  // brighter: 0.5–1.0
+    this.char = Math.random() < 0.7 ? '\u2764' : particleChars[Math.floor(Math.random() * particleChars.length)];
+    this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
     this.rotation = Math.random() * Math.PI * 2;
-    this.rotSpeed = (Math.random() - 0.5) * 0.02;
+    this.rotSpeed = (Math.random() - 0.5) * 0.03;
+    this.life = 1;
+    this.decay = Math.random() * 0.003 + 0.001;
   }
   update() {
     this.y += this.speedY;
     this.x += this.speedX;
     this.rotation += this.rotSpeed;
-    this.opacity -= 0.002;
-    if (this.y < -30 || this.opacity <= 0) this.reset();
+    this.life -= this.decay;
+    if (this.y < -50 || this.life <= 0) this.reset();
   }
   draw() {
     pCtx.save();
-    pCtx.globalAlpha = this.opacity;
-    pCtx.font = this.size + 'px serif';
+    pCtx.globalAlpha = this.opacity * this.life;
+    pCtx.font = `bold ${this.size}px serif`;
+    pCtx.fillStyle = this.color;
+    // Glow effect
+    pCtx.shadowBlur = 15;
+    pCtx.shadowColor = this.color;
     pCtx.translate(this.x, this.y);
     pCtx.rotate(this.rotation);
-    pCtx.fillText(this.char, -this.size/2, this.size/2);
+    pCtx.textAlign = 'center';
+    pCtx.textBaseline = 'middle';
+    pCtx.fillText(this.char, 0, 0);
     pCtx.restore();
   }
 }
 
-for (let i = 0; i < 40; i++) {
+// More particles — 80 total
+for (let i = 0; i < 80; i++) {
   const p = new Particle();
   p.y = Math.random() * pCanvas.height;
+  p.life = Math.random();
   particles.push(p);
 }
 
@@ -692,7 +643,6 @@ function initAll() {
   buildGallery();
   startCounter();
   initNightSky();
-  initMap();
   initQuotes();
   initVoicePlayer();
   startLovePopups();
@@ -921,23 +871,57 @@ class GameHeart {
     this.x = Math.random() * (gameCanvas.width - 40) + 20;
     this.y = -30;
     this.speed = 1.5 + Math.random() * 2.5;
-    this.size = 20 + Math.random() * 20;
+    this.size = 28 + Math.random() * 22;
     this.caught = false;
     this.opacity = 1;
+    this.wobble = Math.random() * Math.PI * 2;
+    this.wobbleSpeed = 0.05 + Math.random() * 0.05;
+    // Random vivid pink/red colors
+    const hues = ['#ff1493','#ff69b4','#FFB6C1','#ff4d6d','#ff85a1'];
+    this.color = hues[Math.floor(Math.random() * hues.length)];
   }
   update() {
     if (!this.caught) {
       this.y += this.speed;
+      this.wobble += this.wobbleSpeed;
+      this.x += Math.sin(this.wobble) * 0.8; // gentle sway
     } else {
-      this.opacity -= 0.05;
-      this.size += 2;
+      this.opacity -= 0.06;
+      this.size += 3;
     }
   }
   draw() {
     gameCtx.save();
     gameCtx.globalAlpha = this.opacity;
-    gameCtx.font = this.size + 'px serif';
-    gameCtx.fillText('\u2764', this.x - this.size/2, this.y);
+    gameCtx.translate(this.x, this.y);
+
+    // Draw CSS-path heart shape
+    const s = this.size * 0.5;
+    gameCtx.beginPath();
+    gameCtx.moveTo(0, s * 0.3);
+    gameCtx.bezierCurveTo(-s * 0.1, -s * 0.1, -s, -s * 0.1, -s, s * 0.4);
+    gameCtx.bezierCurveTo(-s, s * 1.0, 0, s * 1.4, 0, s * 1.4);
+    gameCtx.bezierCurveTo(0, s * 1.4, s, s * 1.0, s, s * 0.4);
+    gameCtx.bezierCurveTo(s, -s * 0.1, s * 0.1, -s * 0.1, 0, s * 0.3);
+    gameCtx.closePath();
+
+    // Glow
+    gameCtx.shadowBlur = 20;
+    gameCtx.shadowColor = this.color;
+
+    // Fill with gradient
+    const grad = gameCtx.createRadialGradient(-s*0.2, -s*0.1, 0, 0, s*0.5, s*1.2);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.3, this.color);
+    grad.addColorStop(1, this.color.replace('ff','aa'));
+    gameCtx.fillStyle = grad;
+    gameCtx.fill();
+
+    // Bright outline
+    gameCtx.strokeStyle = 'rgba(255,255,255,0.6)';
+    gameCtx.lineWidth = 1.5;
+    gameCtx.stroke();
+
     gameCtx.restore();
   }
   isOffScreen() { return this.y > gameCanvas.height + 30 || this.opacity <= 0; }
@@ -970,7 +954,7 @@ function gameLoop() {
   gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
   // Background
-  gameCtx.fillStyle = 'rgba(26,5,51,0.3)';
+  gameCtx.fillStyle = 'rgba(26,5,51,0.6)';
   gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
   // Spawn hearts
@@ -1074,46 +1058,7 @@ function launchGiftConfetti() {
   animate();
 }
 
-// ===== MEMORY MAP =====
-function initMap() {
-  const markersGroup = document.getElementById('map-markers');
-  const popup = document.getElementById('map-popup');
-  const popupTitle = document.getElementById('map-popup-title');
-  const popupDesc = document.getElementById('map-popup-desc');
 
-  mapLocations.forEach((loc, i) => {
-    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','map-marker');
-    g.setAttribute('transform',`translate(${loc.x},${loc.y})`);
-
-    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('r','8');
-    circle.setAttribute('fill','rgba(255,105,180,0.8)');
-    circle.setAttribute('stroke','rgba(255,182,193,0.9)');
-    circle.setAttribute('stroke-width','2');
-
-    const pulse = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    pulse.setAttribute('r','8');
-    pulse.setAttribute('fill','none');
-    pulse.setAttribute('stroke','rgba(255,105,180,0.5)');
-    pulse.setAttribute('stroke-width','2');
-    pulse.innerHTML = '<animate attributeName="r" from="8" to="20" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>';
-
-    g.appendChild(pulse);
-    g.appendChild(circle);
-    markersGroup.appendChild(g);
-
-    g.addEventListener('mouseenter', (e) => {
-      popupTitle.innerHTML = loc.emoji + ' ' + loc.name;
-      popupDesc.textContent = loc.desc;
-      const rect = document.getElementById('map-svg').getBoundingClientRect();
-      popup.style.left = (loc.x / 800 * rect.width + rect.left - window.scrollX + 15) + 'px';
-      popup.style.top = (loc.y / 400 * rect.height + rect.top - window.scrollY - 60) + 'px';
-      popup.classList.add('visible');
-    });
-    g.addEventListener('mouseleave', () => popup.classList.remove('visible'));
-  });
-}
 
 // ===== QUOTES =====
 let quoteIdx = 0;
