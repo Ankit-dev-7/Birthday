@@ -747,6 +747,219 @@ body::before{
 .section{
   box-shadow:inset 0 -60px 80px rgba(0,0,0,0.4),inset 0 60px 80px rgba(0,0,0,0.2) !important;
 }
+
+/* ============================================================
+   ULTRA-CINEMATIC LANDING PAGE
+   ============================================================ */
+
+/* Base */
+#landing{
+  position:fixed;inset:0;z-index:1000;
+  background:#000;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:opacity 1.8s cubic-bezier(.4,0,.2,1);
+}
+#landing.hidden{opacity:0;pointer-events:none}
+
+/* Galaxy canvas */
+#intro-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+
+/* Vignette */
+#intro-vignette{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(0,0,0,0.7) 100%);
+}
+
+/* Nebula layers */
+.intro-nebula{
+  position:absolute;border-radius:50%;filter:blur(80px);
+  pointer-events:none;mix-blend-mode:screen;z-index:1;
+  animation:nebulaDrift var(--nd,30s) var(--ndelay,0s) ease-in-out infinite alternate;
+}
+
+/* Light streaks */
+.intro-streak{
+  position:absolute;width:1px;height:50%;
+  background:linear-gradient(to bottom,transparent,rgba(255,182,193,0.08),transparent);
+  filter:blur(6px);pointer-events:none;z-index:1;
+  animation:rayDrift var(--rd,25s) var(--rdelay,0s) ease-in-out infinite alternate;
+}
+
+/* Text container */
+#intro-text-wrap{
+  position:relative;z-index:10;
+  text-align:center;padding:0 24px;
+  max-width:700px;width:100%;
+  margin-bottom:60px;
+}
+
+/* Individual lines */
+.intro-line{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,4vw,2.6rem);
+  font-style:italic;
+  color:rgba(255,255,255,0.92);
+  line-height:1.5;
+  margin-bottom:16px;
+  opacity:0;
+  transform:translateY(30px);
+  filter:blur(8px);
+  transition:opacity 1.2s cubic-bezier(.4,0,.2,1),
+             transform 1.2s cubic-bezier(.4,0,.2,1),
+             filter 1.2s cubic-bezier(.4,0,.2,1);
+  text-shadow:0 0 40px rgba(255,182,193,0.3),0 0 80px rgba(196,159,255,0.15);
+  will-change:opacity,transform,filter;
+}
+.intro-line.visible{
+  opacity:1;transform:translateY(0);filter:blur(0);
+}
+
+/* Button wrap */
+#intro-btn-wrap{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 1.2s cubic-bezier(.4,0,.2,1),transform 1.2s cubic-bezier(.4,0,.2,1);
+}
+#intro-btn-wrap.visible{opacity:1;transform:translateY(0)}
+
+/* Button */
+#open-btn{
+  position:relative;overflow:hidden;
+  padding:18px 52px;border-radius:60px;
+  font-family:'Dancing Script',cursive;font-size:1.4rem;
+  color:#fff;cursor:pointer;
+  background:linear-gradient(135deg,rgba(255,105,180,0.25),rgba(138,43,226,0.35));
+  border:1px solid rgba(255,182,193,0.5);
+  box-shadow:0 0 30px rgba(255,105,180,0.3),0 0 60px rgba(255,105,180,0.1),inset 0 1px 0 rgba(255,255,255,0.1);
+  animation:btnPulse 3s ease-in-out infinite;
+  transition:transform .3s,box-shadow .3s;
+  letter-spacing:.05em;
+}
+#open-btn:hover{
+  transform:scale(1.06);
+  box-shadow:0 0 50px rgba(255,105,180,0.6),0 0 100px rgba(255,105,180,0.2),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-shimmer{
+  position:absolute;inset:0;border-radius:60px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.12) 50%,transparent 100%);
+  background-size:200% 100%;
+  animation:shimmerMove 3s linear infinite;
+}
+@keyframes shimmerMove{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.btn-text{position:relative;z-index:1}
+
+/* Hint text */
+#intro-hint{
+  font-family:'Dancing Script',cursive;
+  font-size:.95rem;color:rgba(255,255,255,0.25);
+  letter-spacing:.1em;
+  animation:hintPulse 3s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:0.25}50%{opacity:0.5}}
+
+/* ============================================================
+   ULTRA-CINEMATIC LANDING — COMPLETE REDESIGN
+   ============================================================ */
+#landing{
+  position:fixed;inset:0;z-index:1000;background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;will-change:opacity,transform;
+}
+#landing.cin-exit{animation:cinExit 2.4s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes cinExit{
+  0%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(1.05)}
+  100%{opacity:0;transform:scale(1.12)}
+}
+#intro-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+#intro-bg-layer{
+  position:absolute;inset:-8%;z-index:0;
+  background:
+    radial-gradient(ellipse 110% 80% at 25% 35%,rgba(55,0,110,0.55) 0%,transparent 55%),
+    radial-gradient(ellipse 90% 70% at 75% 65%,rgba(110,0,70,0.35) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 15%,rgba(70,0,150,0.28) 0%,transparent 50%),
+    #000;
+  animation:bgZoom 28s ease-in-out infinite alternate;will-change:transform;
+}
+@keyframes bgZoom{
+  0%{transform:scale(1) translate(0,0)}
+  50%{transform:scale(1.07) translate(-1.5%,1%)}
+  100%{transform:scale(1.04) translate(1%,-0.8%)}
+}
+#intro-vignette{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 30%,rgba(0,0,0,0.82) 100%);
+}
+.cin-orb{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;mix-blend-mode:screen;z-index:1;will-change:transform}
+#orb1{width:900px;height:650px;top:-25%;left:-25%;background:radial-gradient(ellipse,rgba(90,0,180,0.25),transparent 70%);animation:orbDrift1 28s ease-in-out infinite alternate}
+#orb2{width:750px;height:550px;bottom:-20%;right:-20%;background:radial-gradient(ellipse,rgba(160,0,100,0.2),transparent 70%);animation:orbDrift2 34s ease-in-out infinite alternate}
+#orb3{width:550px;height:420px;top:25%;left:35%;background:radial-gradient(ellipse,rgba(70,0,160,0.14),transparent 70%);animation:orbDrift3 40s ease-in-out infinite alternate}
+@keyframes orbDrift1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(70px,45px) scale(1.12)}}
+@keyframes orbDrift2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-55px,-35px) scale(1.09)}}
+@keyframes orbDrift3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(35px,-50px) scale(1.06)}}
+#cin-grain{
+  position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;animation:grainShift 0.4s steps(3) infinite;
+}
+@keyframes grainShift{0%{background-position:0 0}33%{background-position:60px 30px}66%{background-position:20px 70px}100%{background-position:0 0}}
+#cin-stage{
+  position:relative;z-index:10;text-align:center;
+  width:100%;max-width:820px;padding:0 32px;
+  min-height:140px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:72px;
+}
+.cin-line{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.9rem,5.5vw,3.8rem);
+  font-style:italic;font-weight:400;
+  color:rgba(238,228,255,0.96);
+  letter-spacing:.03em;line-height:1.35;
+  text-align:center;width:100%;
+  opacity:0;transform:translateY(28px);filter:blur(14px);
+  text-shadow:0 0 80px rgba(180,130,255,0.35),0 0 160px rgba(150,80,255,0.12);
+  pointer-events:none;will-change:opacity,transform,filter;
+}
+.cin-line-gold{
+  font-size:clamp(1.4rem,3.8vw,2.4rem);
+  color:rgba(255,218,170,0.95);
+  text-shadow:0 0 60px rgba(255,190,80,0.35),0 0 120px rgba(255,140,60,0.12);
+}
+#cin-enter-wrap{
+  position:relative;z-index:10;opacity:0;transform:translateY(18px);will-change:opacity,transform;
+}
+#cin-enter-btn{
+  position:relative;padding:15px 60px;
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(190,150,255,0.38);
+  border-radius:60px;
+  color:rgba(225,215,255,0.92);
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-style:italic;letter-spacing:.22em;
+  cursor:pointer;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  box-shadow:0 0 35px rgba(130,60,255,0.12),inset 0 1px 0 rgba(255,255,255,0.05);
+  transition:transform .7s cubic-bezier(.4,0,.2,1),box-shadow .7s cubic-bezier(.4,0,.2,1),border-color .7s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+#cin-enter-btn:hover{
+  transform:scale(1.06);
+  border-color:rgba(200,160,255,0.75);
+  box-shadow:0 0 60px rgba(150,80,255,0.28),0 0 120px rgba(150,80,255,0.08),inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.cin-btn-border{
+  position:absolute;inset:0;border-radius:60px;
+  background:linear-gradient(90deg,transparent,rgba(190,150,255,0.18),transparent);
+  background-size:200% 100%;animation:cinBtnShine 4s linear infinite;
+}
+@keyframes cinBtnShine{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
 <body>
@@ -762,12 +975,43 @@ body::before{
 <!-- Confetti Canvas -->
 <canvas id="confetti-canvas"></canvas>
 
-<!-- ===== LANDING PAGE ===== -->
+<!-- ===== CINEMATIC LANDING PAGE ===== -->
 <div id="landing">
-  <div class="landing-stars" id="landing-stars"></div>
-  <div id="typing-text"></div>
-  <span id="typing-cursor"></span>
-  <button id="open-btn" onclick="openSurprise()">Open Your Surprise &#x1F49C;</button>
+
+  <!-- Deep space canvas -->
+  <canvas id="intro-canvas"></canvas>
+
+  <!-- Cinematic background layers -->
+  <div id="intro-bg-layer"></div>
+
+  <!-- Vignette -->
+  <div id="intro-vignette"></div>
+
+  <!-- Giant nebula orbs -->
+  <div class="cin-orb" id="orb1"></div>
+  <div class="cin-orb" id="orb2"></div>
+  <div class="cin-orb" id="orb3"></div>
+
+  <!-- Film grain -->
+  <div id="cin-grain"></div>
+
+  <!-- Cinematic text stage — one line at a time -->
+  <div id="cin-stage">
+    <div class="cin-line" id="cline-0">Before this day ends…</div>
+    <div class="cin-line" id="cline-1">I need you to know something.</div>
+    <div class="cin-line" id="cline-2">You changed my world forever.</div>
+    <div class="cin-line" id="cline-3">And today…</div>
+    <div class="cin-line cin-line-gold" id="cline-4">is all about you. 💜</div>
+  </div>
+
+  <!-- Enter button -->
+  <div id="cin-enter-wrap">
+    <button id="cin-enter-btn" onclick="openSurprise()">
+      <span class="cin-btn-border"></span>
+      Open Your Surprise 💜
+    </button>
+  </div>
+
 </div>
 
 <!-- ===== MAIN CONTENT ===== -->
@@ -1110,56 +1354,153 @@ function animateParticles() {
 }
 animateParticles();
 
-// ===== LANDING PAGE STARS =====
-const landingStars = document.getElementById('landing-stars');
-for (let i = 0; i < 80; i++) {
-  const star = document.createElement('div');
-  star.className = 'landing-star';
-  star.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*3}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px`;
-  landingStars.appendChild(star);
-}
+// ===== CINEMATIC LANDING ENGINE =====
 
-// ===== TYPING ANIMATION =====
-const typingLines = [
-  'Hey baby\u2026',
-  'Today is not just another day\u2026',
-  'It\'s the day the universe gave me you.'
-];
-let lineIdx = 0, charIdx = 0, isDeleting = false, typingDone = false;
-const typingEl = document.getElementById('typing-text');
-const openBtn = document.getElementById('open-btn');
+// ── Deep space canvas with dust + stars ──
+(function initIntroCanvas() {
+  const canvas = document.getElementById('intro-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  let mouseX = 0, mouseY = 0;
 
-function typeNext() {
-  if (typingDone) return;
-  const currentLine = typingLines[lineIdx];
-  if (!isDeleting) {
-    charIdx++;
-    typingEl.innerHTML = typingLines.slice(0, lineIdx).map(l => '<span>' + l + '</span>').join('<br>') + '<span>' + currentLine.slice(0, charIdx) + '</span>';
-    if (charIdx === currentLine.length) {
-      if (lineIdx === typingLines.length - 1) {
-        typingDone = true;
-        setTimeout(() => { openBtn.classList.add('visible'); }, 800);
-        return;
-      }
-      setTimeout(() => { isDeleting = false; lineIdx++; charIdx = 0; typeNext(); }, 1200);
-      return;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    particles = [];
+    // Dust particles — tiny, slow, elegant
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: -(Math.random() * 0.18 + 0.04),
+        opacity: Math.random() * 0.5 + 0.1,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.008 + Math.random() * 0.012,
+        color: ['rgba(200,170,255,', 'rgba(255,200,220,', 'rgba(255,255,255,', 'rgba(220,180,255,'][Math.floor(Math.random() * 4)]
+      });
+    }
+    // Stars — slightly larger, more visible
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.8 + 0.8,
+        vx: (Math.random() - 0.5) * 0.06,
+        vy: -(Math.random() * 0.08 + 0.02),
+        opacity: Math.random() * 0.6 + 0.2,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.015 + Math.random() * 0.02,
+        color: ['rgba(220,200,255,', 'rgba(255,220,200,', 'rgba(255,255,255,'][Math.floor(Math.random() * 3)],
+        glow: true
+      });
     }
   }
-  setTimeout(typeNext, isDeleting ? 50 : 80);
-}
-setTimeout(typeNext, 1000);
+  resize();
+  window.addEventListener('resize', resize);
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; }, {passive:true});
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.003;
+
+    // Subtle mouse reactive glow
+    if (mouseX || mouseY) {
+      const mg = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 280);
+      mg.addColorStop(0, 'rgba(150,80,255,0.035)');
+      mg.addColorStop(1, 'transparent');
+      ctx.fillStyle = mg;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    particles.forEach(p => {
+      p.twinkle += p.twinkleSpeed;
+      p.x += p.vx;
+      p.y += p.vy;
+      // Wrap
+      if (p.y < -10) p.y = H + 10;
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+
+      const alpha = p.opacity * (0.5 + 0.5 * Math.abs(Math.sin(p.twinkle)));
+      const r = p.r * (0.8 + 0.2 * Math.abs(Math.sin(p.twinkle)));
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + alpha + ')';
+      if (p.glow) {
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color + '0.6)';
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Cinematic line sequencer — NO typing, pure fade/blur ──
+(function cinematicSequence() {
+  const lines = document.querySelectorAll('.cin-line');
+  const enterWrap = document.getElementById('cin-enter-wrap');
+
+  // Each entry: [showAt_ms, hideAt_ms]
+  const timing = [
+    [1200,  4200],   // "Before this day ends…"
+    [4800,  7800],   // "I need you to know something."
+    [8400, 11400],   // "You changed my world forever."
+    [12000, 14800],  // "And today…"
+    [15400, null],   // "is all about you. 💜" — stays visible
+  ];
+
+  function animateLine(el, show) {
+    if (show) {
+      el.style.transition = 'opacity 1.6s cubic-bezier(.4,0,.2,1), transform 1.6s cubic-bezier(.4,0,.2,1), filter 1.6s cubic-bezier(.4,0,.2,1)';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      el.style.filter = 'blur(0)';
+    } else {
+      el.style.transition = 'opacity 1.2s cubic-bezier(.4,0,.2,1), transform 1.2s cubic-bezier(.4,0,.2,1), filter 1.2s cubic-bezier(.4,0,.2,1)';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(-20px)';
+      el.style.filter = 'blur(8px)';
+    }
+  }
+
+  timing.forEach(([showAt, hideAt], i) => {
+    const el = lines[i];
+    if (!el) return;
+    setTimeout(() => animateLine(el, true), showAt);
+    if (hideAt) setTimeout(() => animateLine(el, false), hideAt);
+  });
+
+  // Show Enter button after last line
+  setTimeout(() => {
+    if (enterWrap) {
+      enterWrap.style.transition = 'opacity 1.8s cubic-bezier(.4,0,.2,1), transform 1.8s cubic-bezier(.4,0,.2,1)';
+      enterWrap.style.opacity = '1';
+      enterWrap.style.transform = 'translateY(0)';
+    }
+  }, 17200);
+})();
 
 // ===== OPEN SURPRISE =====
 function openSurprise() {
   const landing = document.getElementById('landing');
   const main = document.getElementById('main-content');
-  landing.classList.add('hidden');
+
+  // Cinematic exit
+  landing.classList.add('cin-exit');
+
   setTimeout(() => {
     landing.style.display = 'none';
     main.style.display = 'block';
-    setTimeout(() => { main.classList.add('visible'); }, 50);
+    setTimeout(() => { main.classList.add('visible'); }, 80);
     initAll();
-  }, 1000);
+  }, 2200);
 }
 
 // ===== INIT ALL SECTIONS =====
@@ -2197,6 +2538,434 @@ function injectCinematicAtmosphere() {
     s.parentNode.insertBefore(div, s.nextSibling);
   });
 }
+</script>
+
+<!-- ============================================================
+     ULTRA-CINEMATIC "I ❤️ LOVE YOU" FINAL SECTION
+     ============================================================ -->
+<section id="iloveyou-section">
+
+  <!-- Living background canvas -->
+  <canvas id="ily-canvas"></canvas>
+
+  <!-- Atmospheric layers -->
+  <div class="ily-orb" id="ily-orb1"></div>
+  <div class="ily-orb" id="ily-orb2"></div>
+  <div class="ily-orb" id="ily-orb3"></div>
+  <div id="ily-vignette"></div>
+  <div id="ily-grain"></div>
+
+  <!-- Main cinematic stage -->
+  <div id="ily-stage">
+
+    <!-- Step 1: "I" -->
+    <div class="ily-word" id="ily-i">I</div>
+
+    <!-- Step 2: Heart -->
+    <div class="ily-heart-wrap" id="ily-heart-wrap">
+      <div id="ily-heart">❤️</div>
+      <div id="ily-heart-aura"></div>
+      <canvas id="ily-burst-canvas"></canvas>
+    </div>
+
+    <!-- Step 3: LOVE YOU -->
+    <div class="ily-word" id="ily-love">LOVE</div>
+    <div class="ily-word" id="ily-you">YOU</div>
+
+  </div>
+
+  <!-- Final composition (all together) -->
+  <div id="ily-final">
+    <span class="ily-final-word" id="ily-f-i">I</span>
+    <span class="ily-final-heart">❤️</span>
+    <span class="ily-final-word" id="ily-f-love">LOVE</span>
+    <span class="ily-final-word" id="ily-f-you">YOU</span>
+  </div>
+
+  <!-- Bottom button -->
+  <div id="ily-btn-wrap">
+    <button id="ily-btn" onclick="ilyReplay()">
+      <span class="ily-btn-shine"></span>
+      Forever With You 💜
+    </button>
+  </div>
+
+</section>
+
+<style>
+/* ── ILY Section Base ── */
+#iloveyou-section{
+  position:relative;min-height:100vh;width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;background:#000;
+}
+
+/* ── Canvas ── */
+#ily-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* ── Orbs ── */
+.ily-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;mix-blend-mode:screen;z-index:1}
+#ily-orb1{width:800px;height:600px;top:-20%;left:-20%;background:radial-gradient(ellipse,rgba(100,0,200,0.22),transparent 70%);animation:ilyOrb1 30s ease-in-out infinite alternate}
+#ily-orb2{width:700px;height:500px;bottom:-15%;right:-15%;background:radial-gradient(ellipse,rgba(200,0,120,0.18),transparent 70%);animation:ilyOrb2 36s ease-in-out infinite alternate}
+#ily-orb3{width:500px;height:400px;top:30%;left:40%;background:radial-gradient(ellipse,rgba(80,0,180,0.12),transparent 70%);animation:ilyOrb3 42s ease-in-out infinite alternate}
+@keyframes ilyOrb1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.1)}}
+@keyframes ilyOrb2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-50px,-30px) scale(1.08)}}
+@keyframes ilyOrb3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,-40px) scale(1.06)}}
+
+/* ── Vignette ── */
+#ily-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 30%,rgba(0,0,0,0.85) 100%)}
+
+/* ── Grain ── */
+#ily-grain{
+  position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;animation:ilyGrain 0.4s steps(3) infinite;
+}
+@keyframes ilyGrain{0%{background-position:0 0}33%{background-position:60px 30px}66%{background-position:20px 70px}100%{background-position:0 0}}
+
+/* ── Stage ── */
+#ily-stage{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:center;gap:24px;
+  flex-wrap:wrap;
+  min-height:200px;
+}
+
+/* ── Individual words ── */
+.ily-word{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(4rem,12vw,9rem);
+  font-style:italic;font-weight:700;
+  background:linear-gradient(135deg,#fff 0%,rgba(230,210,255,0.95) 40%,rgba(255,182,193,0.9) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:none;
+  filter:drop-shadow(0 0 30px rgba(200,150,255,0.5)) drop-shadow(0 0 60px rgba(180,100,255,0.25));
+  opacity:0;transform:translateY(40px) scale(0.92);filter:blur(20px) drop-shadow(0 0 30px rgba(200,150,255,0.5));
+  will-change:opacity,transform,filter;
+  line-height:1;
+}
+
+/* ── Heart ── */
+.ily-heart-wrap{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(0.5);will-change:opacity,transform;
+}
+#ily-heart{
+  font-size:clamp(4rem,12vw,9rem);
+  position:relative;z-index:2;
+  filter:drop-shadow(0 0 20px rgba(255,80,120,0.8)) drop-shadow(0 0 50px rgba(255,80,120,0.4));
+  animation:ilyHeartBeat 1.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes ilyHeartBeat{
+  0%,100%{transform:scale(1)}
+  15%{transform:scale(1.18)}
+  30%{transform:scale(1)}
+  45%{transform:scale(1.1)}
+  60%{transform:scale(1)}
+}
+#ily-heart-aura{
+  position:absolute;inset:-40px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,80,120,0.25),transparent 70%);
+  filter:blur(20px);z-index:1;
+  animation:ilyAuraPulse 1.8s ease-in-out infinite;
+}
+@keyframes ilyAuraPulse{
+  0%,100%{transform:scale(1);opacity:0.6}
+  50%{transform:scale(1.3);opacity:1}
+}
+#ily-burst-canvas{position:absolute;inset:-100px;pointer-events:none;z-index:3;width:calc(100% + 200px);height:calc(100% + 200px)}
+
+/* ── Final composition ── */
+#ily-final{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  flex-wrap:wrap;
+  opacity:0;transform:scale(0.95);
+  will-change:opacity,transform;
+  animation:ilyFinalPulse 4s ease-in-out infinite;
+}
+#ily-final.visible{opacity:1;transform:scale(1);transition:opacity 2s cubic-bezier(.4,0,.2,1),transform 2s cubic-bezier(.4,0,.2,1)}
+@keyframes ilyFinalPulse{
+  0%,100%{filter:drop-shadow(0 0 20px rgba(200,150,255,0.3))}
+  50%{filter:drop-shadow(0 0 50px rgba(200,150,255,0.6)) drop-shadow(0 0 100px rgba(255,100,150,0.2))}
+}
+.ily-final-word{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,9vw,7rem);
+  font-style:italic;font-weight:700;
+  background:linear-gradient(135deg,#fff 0%,rgba(230,210,255,0.95) 40%,rgba(255,182,193,0.9) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+}
+.ily-final-heart{
+  font-size:clamp(3rem,9vw,7rem);
+  filter:drop-shadow(0 0 20px rgba(255,80,120,0.8));
+  animation:ilyHeartBeat 1.8s cubic-bezier(.4,0,.2,1) infinite;
+  line-height:1;
+}
+
+/* ── Button ── */
+#ily-btn-wrap{
+  position:relative;z-index:10;margin-top:60px;
+  opacity:0;transform:translateY(20px);will-change:opacity,transform;
+}
+#ily-btn-wrap.visible{
+  opacity:1;transform:translateY(0);
+  transition:opacity 1.8s cubic-bezier(.4,0,.2,1),transform 1.8s cubic-bezier(.4,0,.2,1);
+}
+#ily-btn{
+  position:relative;overflow:hidden;
+  padding:16px 52px;border-radius:60px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(200,150,255,0.4);
+  color:rgba(230,215,255,0.95);
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-style:italic;letter-spacing:.15em;
+  cursor:pointer;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 0 30px rgba(150,80,255,0.15),inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:transform .6s cubic-bezier(.4,0,.2,1),box-shadow .6s cubic-bezier(.4,0,.2,1),border-color .6s;
+  animation:ilyBtnFloat 4s ease-in-out infinite;
+}
+@keyframes ilyBtnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#ily-btn:hover{
+  transform:translateY(-8px) scale(1.04);
+  border-color:rgba(200,150,255,0.8);
+  box-shadow:0 0 60px rgba(150,80,255,0.35),0 0 120px rgba(150,80,255,0.12),inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.ily-btn-shine{
+  position:absolute;inset:0;border-radius:60px;
+  background:linear-gradient(90deg,transparent,rgba(200,150,255,0.2),transparent);
+  background-size:200% 100%;animation:ilyBtnShine 3s linear infinite;
+}
+@keyframes ilyBtnShine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+
+<script>
+// ============================================================
+// ULTRA-CINEMATIC "I ❤️ LOVE YOU" ENGINE
+// ============================================================
+(function() {
+
+  // ── Living background canvas ──
+  const canvas = document.getElementById('ily-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  let mouseX = 0, mouseY = 0;
+
+  function resizeIly() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    particles = [];
+    // Dust
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: Math.random()*1.4+0.2,
+        vx: (Math.random()-0.5)*0.1, vy: -(Math.random()*0.15+0.03),
+        op: Math.random()*0.45+0.08,
+        tw: Math.random()*Math.PI*2, tws: 0.008+Math.random()*0.012,
+        col: ['rgba(200,160,255,','rgba(255,180,210,','rgba(255,255,255,','rgba(180,140,255,'][Math.floor(Math.random()*4)]
+      });
+    }
+    // Bokeh
+    for (let i = 0; i < 25; i++) {
+      particles.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: Math.random()*4+2,
+        vx: (Math.random()-0.5)*0.05, vy: -(Math.random()*0.06+0.01),
+        op: Math.random()*0.2+0.05,
+        tw: Math.random()*Math.PI*2, tws: 0.006+Math.random()*0.008,
+        col: ['rgba(200,160,255,','rgba(255,150,180,','rgba(255,220,180,'][Math.floor(Math.random()*3)],
+        bokeh: true
+      });
+    }
+  }
+
+  const ro = new ResizeObserver(resizeIly);
+  ro.observe(canvas.parentElement);
+  resizeIly();
+
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; }, {passive:true});
+
+  function drawIly() {
+    if (!canvas.offsetParent && canvas.offsetHeight === 0) { requestAnimationFrame(drawIly); return; }
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    ctx.clearRect(0,0,W,H);
+
+    // Mouse glow
+    if (mouseX && mouseY) {
+      const rect = canvas.getBoundingClientRect();
+      const mx = mouseX - rect.left, my = mouseY - rect.top;
+      const mg = ctx.createRadialGradient(mx,my,0,mx,my,300);
+      mg.addColorStop(0,'rgba(150,80,255,0.04)');
+      mg.addColorStop(1,'transparent');
+      ctx.fillStyle = mg; ctx.fillRect(0,0,W,H);
+    }
+
+    particles.forEach(p => {
+      p.tw += p.tws; p.x += p.vx; p.y += p.vy;
+      if (p.y < -10) p.y = H+10;
+      if (p.x < -10) p.x = W+10;
+      if (p.x > W+10) p.x = -10;
+      const a = p.op * (0.4 + 0.6*Math.abs(Math.sin(p.tw)));
+      const r = p.r * (0.8 + 0.2*Math.abs(Math.sin(p.tw)));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+      ctx.fillStyle = p.col + a + ')';
+      if (p.bokeh) { ctx.shadowBlur = 12; ctx.shadowColor = p.col+'0.5)'; }
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+    requestAnimationFrame(drawIly);
+  }
+  drawIly();
+
+  // ── Burst particle explosion ──
+  function burstParticles() {
+    const bc = document.getElementById('ily-burst-canvas');
+    if (!bc) return;
+    const bctx = bc.getContext('2d');
+    const bW = bc.offsetWidth, bH = bc.offsetHeight;
+    bc.width = bW; bc.height = bH;
+    const cx = bW/2, cy = bH/2;
+    const bursts = [];
+    const colors = ['rgba(255,80,120,','rgba(255,150,200,','rgba(200,100,255,','rgba(255,200,100,','rgba(255,255,255,'];
+    for (let i = 0; i < 60; i++) {
+      const angle = (Math.PI*2/60)*i + Math.random()*0.3;
+      const speed = 1.5 + Math.random()*4;
+      bursts.push({
+        x:cx, y:cy,
+        vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed,
+        r: Math.random()*3+1,
+        op: 1,
+        col: colors[Math.floor(Math.random()*colors.length)]
+      });
+    }
+    let frame = 0;
+    function animBurst() {
+      bctx.clearRect(0,0,bW,bH);
+      bursts.forEach(b => {
+        b.x += b.vx; b.y += b.vy;
+        b.vy += 0.04; b.op -= 0.018;
+        if (b.op <= 0) return;
+        bctx.beginPath();
+        bctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+        bctx.fillStyle = b.col + b.op + ')';
+        bctx.shadowBlur = 8; bctx.shadowColor = b.col+'0.8)';
+        bctx.fill(); bctx.shadowBlur = 0;
+      });
+      frame++;
+      if (frame < 80) requestAnimationFrame(animBurst);
+      else bctx.clearRect(0,0,bW,bH);
+    }
+    animBurst();
+  }
+
+  // ── Cinematic reveal sequence ──
+  function runIlySequence() {
+    const stage = document.getElementById('ily-stage');
+    const final = document.getElementById('ily-final');
+    const btnWrap = document.getElementById('ily-btn-wrap');
+    const wordI = document.getElementById('ily-i');
+    const heartWrap = document.getElementById('ily-heart-wrap');
+    const wordLove = document.getElementById('ily-love');
+    const wordYou = document.getElementById('ily-you');
+
+    // Reset
+    [wordI, heartWrap, wordLove, wordYou].forEach(el => {
+      if (el) { el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = ''; el.style.filter = ''; }
+    });
+    if (final) { final.classList.remove('visible'); final.style.display = 'none'; }
+    if (btnWrap) { btnWrap.classList.remove('visible'); }
+    if (stage) stage.style.display = 'flex';
+
+    function revealWord(el, delay, opts = {}) {
+      setTimeout(() => {
+        el.style.transition = `opacity ${opts.dur||1.8}s cubic-bezier(.4,0,.2,1), transform ${opts.dur||1.8}s cubic-bezier(.4,0,.2,1), filter ${opts.dur||1.8}s cubic-bezier(.4,0,.2,1)`;
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0) scale(1)';
+        el.style.filter = 'blur(0) drop-shadow(0 0 30px rgba(200,150,255,0.5)) drop-shadow(0 0 60px rgba(180,100,255,0.25))';
+      }, delay);
+    }
+
+    function hideWord(el, delay) {
+      setTimeout(() => {
+        el.style.transition = 'opacity 1.2s cubic-bezier(.4,0,.2,1), transform 1.2s cubic-bezier(.4,0,.2,1), filter 1.2s cubic-bezier(.4,0,.2,1)';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-30px) scale(1.05)';
+        el.style.filter = 'blur(10px)';
+      }, delay);
+    }
+
+    // STEP 1 — "I"
+    wordI.style.transform = 'translateY(40px) scale(0.92)';
+    wordI.style.filter = 'blur(20px)';
+    revealWord(wordI, 600, {dur:2.2});
+    hideWord(wordI, 3200);
+
+    // STEP 2 — Heart
+    heartWrap.style.transform = 'scale(0.4)';
+    setTimeout(() => {
+      heartWrap.style.transition = 'opacity 1.4s cubic-bezier(.34,1.56,.64,1), transform 1.4s cubic-bezier(.34,1.56,.64,1)';
+      heartWrap.style.opacity = '1';
+      heartWrap.style.transform = 'scale(1)';
+      burstParticles();
+    }, 4000);
+    hideWord(heartWrap, 6800);
+
+    // STEP 3 — "LOVE"
+    wordLove.style.transform = 'translateY(40px) scale(0.92)';
+    wordLove.style.filter = 'blur(20px)';
+    revealWord(wordLove, 7400, {dur:2});
+    hideWord(wordLove, 9800);
+
+    // "YOU"
+    wordYou.style.transform = 'translateY(40px) scale(0.92)';
+    wordYou.style.filter = 'blur(20px)';
+    revealWord(wordYou, 9000, {dur:2});
+    hideWord(wordYou, 11200);
+
+    // STEP 4 — Final composition
+    setTimeout(() => {
+      if (stage) stage.style.display = 'none';
+      if (final) {
+        final.style.display = 'flex';
+        setTimeout(() => final.classList.add('visible'), 50);
+      }
+    }, 12000);
+
+    // Button
+    setTimeout(() => {
+      if (btnWrap) btnWrap.classList.add('visible');
+    }, 14500);
+  }
+
+  // Auto-start when section enters viewport
+  const section = document.getElementById('iloveyou-section');
+  if (section) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          runIlySequence();
+          obs.unobserve(section);
+        }
+      });
+    }, {threshold: 0.3});
+    obs.observe(section);
+  }
+
+  // Replay button
+  window.ilyReplay = function() {
+    const final = document.getElementById('ily-final');
+    const stage = document.getElementById('ily-stage');
+    if (final) { final.classList.remove('visible'); final.style.display = 'none'; }
+    if (stage) stage.style.display = 'flex';
+    setTimeout(runIlySequence, 300);
+  };
+
+})();
 </script>
 
 </body>
